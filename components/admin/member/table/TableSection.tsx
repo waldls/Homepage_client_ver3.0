@@ -143,7 +143,7 @@ const TableSection = forwardRef<TableSectionRef, TableSectionProps>(
     const displayedMembers = useMemo(() => {
       if (isSearching) {
         const filtered = allMembers.filter((member) =>
-          member.name.includes(searchQuery)
+          (member.name ?? '').includes(searchQuery)
         );
         const start = currentPage * pageSize;
         const end = start + pageSize;
@@ -180,7 +180,7 @@ const TableSection = forwardRef<TableSectionRef, TableSectionProps>(
     useEffect(() => {
       if (isSearching) {
         const filtered = allMembers.filter((member) =>
-          member.name.includes(searchQuery)
+          (member.name ?? '').includes(searchQuery)
         );
         setTotalPages(Math.ceil(filtered.length / pageSize));
       }
