@@ -124,7 +124,7 @@ const ApplicantInfo = ({ onInfoChange, PersonalInfo }: ApplicantInfoProps) => {
           option1={Gender[0].toString()}
           option2={Gender[1].toString()}
           seletion={handleGenderChange}
-          className=""
+          className="cursor-pointer"
         />
         <p className="mt-6 text-[16px] font-normal leading-6">학과</p>
         <Input

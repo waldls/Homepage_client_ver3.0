@@ -110,7 +110,7 @@ const VocalNotice = () => {
         </li>
         <li>2-3곡을 자유롭게 선곡하여 영상으로 찍어주세요.</li>
         <li>가사를 보고 불러도 되니 편하게 지원해 주세요.</li>
-        <li>지원 영상은 godblessjiwoo@gmail.com로 제출해주세요.</li>
+        <li>지원 영상은 seungyu0622@gmail.com로 제출해주세요.</li>
         <li>기재하신 연락처를 통해 지원 방법에 대해 추가 공지드리겠습니다.</li>
       </ul>
     </div>

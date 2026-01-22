@@ -166,7 +166,7 @@ const Schedule = () => {
           desClassName=""
         />
         <ScheduleCard
-          title="24기 활동"
+          title="25기 활동"
           period={`~ ${formatYear(DynamicRecruitingInfo.activityPeriod)}.${formatMonth(DynamicRecruitingInfo.activityPeriod)}`}
           description={`선발 직후부터<br/>${formatYear(DynamicRecruitingInfo.activityPeriod)}년 ${formatMonth(DynamicRecruitingInfo.activityPeriod)}월 정기공연까지`}
           titleClassName="bg-primary-50"

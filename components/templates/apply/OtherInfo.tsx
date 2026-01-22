@@ -27,7 +27,7 @@ const OtherInfo = ({ onInfoChange, OtherInfo }: OtherInfoProps) => {
     <div className="flex flex-col py-10 px-4 pad:px-12">
       <div className="flex flex-col pad:flex-row gap-1 pad:gap-3 pad:items-end">
         <p className="text-gray-90 text-[20px] font-semibold">
-          3월 17일 스케줄
+          3월 16일 스케줄
         </p>
         <p className="text-gray-40 text-[16px] font-medium">
           면접 시간 조정을 위해 수업이 끝나는 시간을 정확하게 작성해주세요.
@@ -53,7 +53,7 @@ const OtherInfo = ({ onInfoChange, OtherInfo }: OtherInfoProps) => {
         option1="참석"
         option2="미참석"
         seletion={handleAfterpartyChange}
-        className="mt-6"
+        className="mt-6 cursor-pointer"
       />
     </div>
   );

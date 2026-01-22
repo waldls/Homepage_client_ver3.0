@@ -94,11 +94,11 @@ const CLInfo = ({ onInfoChange, CoverLetterInfo }: CLInfoProps) => {
         option4={Session[3].toString()}
         option5={Session[4].toString()}
         selection={handleSessionChange}
-        className="mt-6"
+        className="mt-6 cursor-pointer"
       />
       {isVocalSelected && (
         <div className="mt-6 text-red-500 text-[16px]">
-          보컬 지원 영상은 godblessjiwoo@gmail.com로 제출해 주세요.
+          보컬 지원 영상은 seungyu0622@gmail.com로 제출해 주세요.
           <br />
           기재하신 연락처를 통해 지원 방식에 대해 추가 공지드리겠습니다.
         </div>
