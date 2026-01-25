@@ -4,7 +4,7 @@ import WestIcon from '@mui/icons-material/West';
 import * as React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 
-import { defaultData, recruitingInfoList } from './recruitingData';
+import { defaultData, leaderInfoList } from './leaderInfo';
 
 import CancelModal from '@/components/admin/CancelModal';
 import EditModal from '@/components/admin/EditModal';
@@ -44,13 +44,13 @@ const RecruitingPage = () => {
   return (
     <div className="font-pretendard mx-auto w-full pad:w-[786px] dt:w-[1200px] h-auto flex flex-col gap-[40px]">
       {/* Banner */}
-      <Banner>모집 정보 관리</Banner>
+      <Banner>기장 정보 관리</Banner>
 
       {/* List */}
       <div className="flex flex-col w-full max-pad:px-[16px]">
         <InfoList
           data={data}
-          fieldList={recruitingInfoList}
+          fieldList={leaderInfoList}
           onChange={onChangeData}
         />
       </div>

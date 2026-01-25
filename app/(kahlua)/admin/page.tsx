@@ -6,12 +6,13 @@ import Header from '@/components/admin/Header';
 const LEFT_COLUMN_ITEMS = [
   { name: '공연 예매 현황', url: '/admin/ticketing' },
   { name: '공연 생성하기', url: '/admin/performanceInfo' },
+  { name: '기장 정보 관리', url: '/admin/leaderInfo' },
 ];
 
 const RIGHT_COLUMN_ITEMS = [
   { name: '지원 현황', url: '/admin/applicant' },
   { name: '문자 전송', url: '/admin/message' },
-  { name: '지원서 정보 관리', url: '/admin/recruitingInfo' },
+  { name: '깔루아 모집 정보 관리', url: '/admin/recruitingInfo' },
   { name: '깔루아 멤버 정보 관리', url: '/admin/member' },
 ];
 
