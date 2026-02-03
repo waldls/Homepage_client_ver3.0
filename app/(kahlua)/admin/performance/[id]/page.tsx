@@ -1,8 +1,5 @@
 'use client';
 
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -24,9 +21,8 @@ import AdminButton from '@/components/ui/admin/Button';
 import ImageBox from '@/components/ui/admin/ImageBox';
 import TicketInfoList from '@/components/ui/admin/TicketInfo';
 import Banner from '@/components/ui/Banner';
+import { toLocalInput, toUtcPayload } from '@/utils/timeZoneUtils';
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 const EditPerformancePage = () => {
   const params = useParams();
@@ -40,46 +36,36 @@ const EditPerformancePage = () => {
     [key: string]: number;
   }>(defaultGeneralTicketData);
   const [image, setImage] = useState<{ [key: string]: string }>(defaultImage);
-  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
-  const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [IsDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 공연 정보 가져오기
   useEffect(() => {
     const fetchPerformance = async () => {
       try {
         const response = await authInstance.get(`/performances/${params.id}`);
         if (response.data.isSuccess) {
           const p = response.data.result.performanceResponse;
-
-          // UTC → KST 변환
-          const start = dayjs.utc(p.performance_start_time).tz('Asia/Seoul');
-          const end = p.performance_end_time
-            ? dayjs.utc(p.performance_end_time).tz('Asia/Seoul')
-            : start.add(3, 'hour');
-
           setData({
             title: p.title,
             content: p.content,
             venue: p.venue,
             address: p.address,
-            dateTime: start.format('YYYY-MM-DDTHH:mm'), // ISO-like 포맷 for input[type="datetime-local"]
-            performanceStartTime: start.toISOString(),
-            performanceEndTime: end.toISOString(),
-            bookingStartDate: p.booking_start_date,
-            bookingEndDate: p.booking_end_date,
             youtubeUrl: p.youtube_url || '',
+            performanceStartTime: toLocalInput(p.performance_start_time),
+            performanceEndTime: toLocalInput(p.performance_end_time),
+            entranceTime: toLocalInput(p.entrance_time),
+            bookingStartDate: toLocalInput(p.booking_start_date),
+            bookingEndDate: toLocalInput(p.booking_end_date),
           });
-
           setImage({
             posterImageUrl: p.poster_image_url,
           });
-
           setFreshmanTicketData({
             freshmanPrice: Number(p.freshman_price),
             freshmanMaxPurchase: p.freshman_max_purchase,
           });
-
           setGeneralTicketData({
             generalPrice: Number(p.general_price),
             generalMaxPurchase: p.general_max_purchase,
@@ -92,47 +78,31 @@ const EditPerformancePage = () => {
         setIsLoading(false);
       }
     };
-
-    if (params.id) {
-      fetchPerformance();
-    }
+    if (params.id) fetchPerformance();
   }, [params.id]);
 
   const onChangeData = useCallback((newValue: any, label: string) => {
-    setData((prevData) => ({
-      ...prevData,
-      [label]: newValue,
-    }));
+    setData((prev) => ({ ...prev, [label]: newValue }));
   }, []);
 
   const onChangeImage = useCallback((newValue: string, label: string) => {
-    setImage((prevData) => ({
-      ...prevData,
-      [label]: newValue,
-    }));
+    setImage((prev) => ({ ...prev, [label]: newValue }));
   }, []);
 
   const onChangeFreshmanTicketData = useCallback(
     (newValue: number, label: string) => {
-      setFreshmanTicketData((prevData) => ({
-        ...prevData,
-        [label]: newValue,
-      }));
+      setFreshmanTicketData((prev) => ({ ...prev, [label]: newValue }));
     },
     []
   );
 
   const onChangeGeneralTicketData = useCallback(
     (newValue: number, label: string) => {
-      setGeneralTicketData((prevData) => ({
-        ...prevData,
-        [label]: newValue,
-      }));
+      setGeneralTicketData((prev) => ({ ...prev, [label]: newValue }));
     },
     []
   );
 
-  // 공연 정보 수정
   const onSaveEdit = useCallback(async () => {
     try {
       const performanceData = {
@@ -142,15 +112,15 @@ const EditPerformancePage = () => {
         content: data.content,
         venue: data.venue,
         address: data.address,
-        dateTime: data.dateTime,
+        performanceStartTime: toUtcPayload(data.performanceStartTime),
+        performanceEndTime: toUtcPayload(data.performanceEndTime),
+        entranceTime: toUtcPayload(data.entranceTime),
+        bookingStartDate: toUtcPayload(data.bookingStartDate),
+        bookingEndDate: toUtcPayload(data.bookingEndDate),
         freshmanPrice: String(freshmanTicketData.freshmanPrice),
         freshmanMaxPurchase: freshmanTicketData.freshmanMaxPurchase,
         generalPrice: String(generalTicketData.generalPrice),
         generalMaxPurchase: generalTicketData.generalMaxPurchase,
-        bookingStartDate: data.bookingStartDate,
-        bookingEndDate: data.bookingEndDate,
-        performanceStartTime: data.performanceStartTime,
-        performanceEndTime: data.performanceEndTime,
       };
 
       const response = await authInstance.put(
@@ -164,7 +134,7 @@ const EditPerformancePage = () => {
         router.push(`/ticket/${params.id}`);
       }
     } catch (error: any) {
-      console.error('공연 정보 수정 실패:', error);
+      console.error('공연 정보 수정 실패:', error?.response?.data ?? error);
       alert('공연 정보 수정에 실패했습니다.');
     }
   }, [data, image, freshmanTicketData, generalTicketData, params.id, router]);
@@ -177,7 +147,7 @@ const EditPerformancePage = () => {
         router.push('/performance');
       }
     } catch (error: any) {
-      console.error('공연 정보 삭제 실패:', error);
+      console.error('공연 정보 삭제 실패:', error?.response?.data ?? error);
       alert('공연 정보 삭제에 실패했습니다.');
     }
   }, [params.id, router]);
@@ -193,7 +163,6 @@ const EditPerformancePage = () => {
   return (
     <div className="font-pretendard mx-auto w-full pad:w-[786px] dt:w-[1200px] h-auto flex flex-col gap-[40px]">
       <Banner>공연 정보 수정</Banner>
-
       <div className="flex flex-col pad:flex-row w-full max-pad:px-[16px] gap-[40px] justify-center items-center pad:items-start">
         <ImageBox
           data={image}
@@ -222,7 +191,6 @@ const EditPerformancePage = () => {
           </TicketInfoList>
         </div>
       </div>
-
       <div className="flex flex-row gap-[24px] w-full max-pad:px-[16px] justify-end">
         {/* <AdminButton onClick={onCancelEdit}>취소하기</AdminButton> */}
         <AdminButton

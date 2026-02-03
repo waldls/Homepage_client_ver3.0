@@ -72,32 +72,44 @@ const PerformancePage = () => {
     []
   );
 
-  const onSaveEdit = useCallback(async () => {
-    try {
-      const performanceData = {
-        ...data,
-        posterImageUrl: image.posterImageUrl,
-        freshmanPrice: String(freshmanTicketData.freshmanPrice),
-        freshmanMaxPurchase: freshmanTicketData.freshmanMaxPurchase,
-        generalPrice: String(generalTicketData.generalPrice),
-        generalMaxPurchase: generalTicketData.generalMaxPurchase,
-      };
+ const onSaveEdit = useCallback(async () => {
+   try {
+     const performanceData = {
+       posterImageUrl: image.posterImageUrl,
+       youtubeUrl: data.youtubeUrl,
+       title: data.title,
+       content: data.content,
+       venue: data.venue,
+       address: data.address,
+       performanceStartTime: data.performanceStartTime,
+       performanceEndTime: data.performanceEndTime,
+       entranceTime: data.entranceTime,
+       bookingStartDate: data.bookingStartDate,
+       bookingEndDate: data.bookingEndDate,
+       freshmanPrice: String(freshmanTicketData.freshmanPrice),
+       freshmanMaxPurchase: Number(freshmanTicketData.freshmanMaxPurchase),
+       generalPrice: String(generalTicketData.generalPrice),
+       generalMaxPurchase: Number(generalTicketData.generalMaxPurchase),
+     };
 
-      const response = await authInstance.post(
-        '/performances/create',
-        performanceData
-      );
+     const res = await authInstance.post(
+       '/performances/create',
+       performanceData
+     );
 
-      if (response.status === 200) {
-        alert('공연 정보가 성공적으로 생성되었습니다.');
-        setIsEditModalOpen(false);
-        router.push('/admin');
-      }
-    } catch (error: any) {
-      console.error('공연 정보 생성 실패:', error);
-      alert('공연 정보 생성에 실패했습니다.');
-    }
-  }, [data, image, freshmanTicketData, generalTicketData, router]);
+     if (res.status === 200) {
+       alert('공연 정보가 성공적으로 생성되었습니다.');
+       setIsEditModalOpen(false);
+       router.push('/admin');
+     }
+   } catch (error: any) {
+     console.error('공연 정보 생성 실패:', error);
+     console.error('error.response?.status:', error?.response?.status);
+     console.error('error.response?.data:', error?.response?.data);
+     alert('공연 정보 생성에 실패했습니다.');
+   }
+ }, [data, image, freshmanTicketData, generalTicketData, router]);
+
 
   // 수정 취소
   const onCancelEdit = useCallback(() => {

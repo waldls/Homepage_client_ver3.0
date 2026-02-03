@@ -44,8 +44,20 @@ export const performanceInfoList: InputFieldType[] = [
     inputType: 'text',
   },
   {
-    title: '일시',
+    title: '공연 시작 시각',
     label: 'performanceStartTime',
+    type: 'datetime',
+    required: true,
+  },
+  {
+    title: '공연 종료 시각',
+    label: 'performanceEndTime',
+    type: 'datetime',
+    required: true,
+  },
+  {
+    title: '입장 시각',
+    label: 'entranceTime',
     type: 'datetime',
     required: true,
   },
@@ -107,12 +119,14 @@ export const defaultData = {
   title: '2024년 9월 정기 공연',
   venue: '001 클럽',
   address: '서울 마포구 월드컵북로2길 49',
-  dateTime: '2022-04-17T15:30',
-  bookingStartDate: '2022-04-17T15:30',
-  bookingEndDate: '2022-04-17T15:30',
   content:
     '#스물다섯_스물하나 #데이식스 #잔나비 #YB밴드 #백예린 #미도와_파라솔',
   youtubeUrl: 'https://www.youtube.com/@kahluaband8409',
+  performanceStartTime: '2022-04-17T15:30:00.000Z',
+  performanceEndTime: '2022-04-17T17:30:00.000Z',
+  entranceTime: '2022-04-17T15:00:00.000Z',
+  bookingStartDate: '2022-04-10T00:00:00.000Z',
+  bookingEndDate: '2022-04-17T15:30:00.000Z',
 };
 
 export const defaultFreshmanTicketData = {
