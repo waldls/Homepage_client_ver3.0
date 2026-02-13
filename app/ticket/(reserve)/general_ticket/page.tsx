@@ -136,9 +136,9 @@ const GeneralTicket = () => {
       >
         <div className="flex flex-col">
           <MemberSelection
-            description="일반 예매는 최대 1인 4매 구매 가능합니다."
+            description="일반 예매는 최대 1인 5매 구매 가능합니다."
             min={1}
-            max={4}
+            max={5}
             ticket="general"
             member={member}
             setMember={setMember}
