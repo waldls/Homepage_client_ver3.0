@@ -38,10 +38,10 @@ const TicketOption = ({ data, isDays }: TicketOptionProps) => {
     setActive(isDays);
   }, [isDays]);
 
-  // const handleFreshmanClick = () => {
-  //   setFreshman(true);
-  //   setGeneral(false);
-  // };
+  const handleFreshmanClick = () => {
+    setFreshman(true);
+    setGeneral(false);
+  };
 
   const handleGeneralClick = () => {
     setFreshman(false);
@@ -98,7 +98,7 @@ const TicketOption = ({ data, isDays }: TicketOptionProps) => {
             </div>
           </div>
           <div className="h-[280px] flex flex-col flex-shrink-0 rounded-br-xl border-gray-15 bg-gray-5 items-center">
-            {/* <Ticket
+            <Ticket
               className="focus:cursor-pointer"
               ticket="신입생"
               price="무료"
@@ -110,7 +110,7 @@ const TicketOption = ({ data, isDays }: TicketOptionProps) => {
                   : 'impossible'
               }
               onClick={handleFreshmanClick}
-            /> */}
+            />
             <Ticket
               className="focus:cursor-pointer"
               ticket="일반"
