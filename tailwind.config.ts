@@ -36,6 +36,9 @@ const config: Config = {
         70: '#474A5C',
         80: '#31333F',
         90: '#1B1C23',
+        1: '#F8F9FA',
+        2: '#B0B0B0',
+        3: '#757A95',
       },
       danger: {
         0: '#FCE3E3',
@@ -60,6 +63,25 @@ const config: Config = {
         30: '#3ADFAD',
         40: '#20C594',
         50: '#199A73',
+      },
+      blue: {
+        main: '#0055FF',
+        reg: '#3377FF',
+        light: '#99BBFF',
+        dark: '#212529',
+      },
+      yellow: {
+        main: '#F9B506',
+        med: '#FEEA97',
+        light: '#FFF7E6',
+        dark: '#F6DEAB',
+        grad: '',
+      },
+      red: {
+        main: '#ED5050',
+        med: '#FECDD3',
+        light: '#FFF2F5',
+        grad: '',
       },
     },
 
@@ -95,6 +117,11 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         'ticket-complete':
           "linear-gradient(rgba(27, 28, 35, 0.60), rgba(27, 28, 35, 0.60)), url('/image/ticket/Poster_202503.avif')",
+        'blue-grad':
+          'radial-gradient(81.86% 81.86% at 50% 50%, #152C5A 0%, #0055FE 100%)',
+        'yellow-grad': 'linear-gradient(180deg, #F9B506 0%, #FFF7E6 100%)',
+        'red-grad':
+          'linear-gradient(180deg, #ED5050 0%, rgba(255, 242, 245, 0.92) 100%)',
       },
 
       keyframes: {
