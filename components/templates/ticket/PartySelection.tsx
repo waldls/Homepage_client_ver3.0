@@ -49,22 +49,15 @@ const PartySelection = ({ dispatch, state }: PartySelectionProps) => {
     <div className="flex flex-col mt-10 mb-10 w-full px-4 pad:px-12">
       <div className="flex h-[30px]">
         <div className="font-semibold text-lg pad:text-xl leading-[30px] text-gray-900">
-          새내기 소모임 참석 여부
+          새내기 소모임 참석 여부 (3월 9일 진행)
         </div>
       </div>
       <div className="flex flex-col mt-6">
         <SelectBox
-          name="3월 5일 참석"
+          name="참석"
           state={state.participation1}
           onClick={() => dispatch({ type: 'PARTICIPATION1' })}
           alt="PartySelection"
-        />
-        <SelectBox
-          name="3월 6일 참석"
-          state={state.participation2}
-          onClick={() => dispatch({ type: 'PARTICIPATION2' })}
-          alt="PartySelection"
-          className="mt-4"
         />
         <SelectBox
           name="미참석"
