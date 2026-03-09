@@ -39,7 +39,6 @@ const AlbumFolder = ({
       <div
         className={`relative ${isMobile ? 'w-[189px] h-[162px]' : 'w-[396px] h-[325px]'}`}
       >
-        {' '}
         <div className="absolute inset-0 z-0">
           <Image src={folderSrc} alt="folder" fill className="object-contain" />
         </div>

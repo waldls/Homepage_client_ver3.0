@@ -5,6 +5,7 @@ import AlbumFolder from '@/components/album/AlbumFolder';
 import ReactionStatus from '@/components/album/ReactionBadge';
 import ReactionSelector from '@/components/album/ReactionSelector';
 import PhotoList from '@/components/album/PhotoList';
+import Icons from '@/components/album/Icons';
 
 const page = () => {
   return (
@@ -23,6 +24,12 @@ const page = () => {
       </div>
       <div>
         <PhotoList />
+      </div>
+      <div className="flex flex-row gap-7 mt-20">
+        <Icons type="delete" />
+        <Icons type="download" />
+        <Icons type="close" />
+        <Icons type="photo_plus" />
       </div>
     </div>
   );
