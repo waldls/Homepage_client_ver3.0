@@ -11,7 +11,7 @@ const LEFT_COLUMN_ITEMS = [
 
 const RIGHT_COLUMN_ITEMS = [
   { name: '지원 현황', url: '/admin/applicant' },
-  { name: '문자 전송', url: '/admin/message' },
+  { name: '소모임 참석 여부 관리', url: '/admin/club-attendance' },
   { name: '깔루아 모집 정보 관리', url: '/admin/recruitingInfo' },
   { name: '깔루아 멤버 정보 관리', url: '/admin/member' },
 ];
