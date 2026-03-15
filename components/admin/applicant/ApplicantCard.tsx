@@ -84,7 +84,14 @@ const ApplicantCard = ({
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
   const [
-    { motive, experience_and_reason, play_instrument, readiness, finish_time },
+    {
+      motive,
+      experience_and_reason,
+      play_instrument,
+      readiness,
+      finish_time,
+      meeting_participation,
+    },
     setDetail,
   ] = useState({
     motive: '',
@@ -92,6 +99,7 @@ const ApplicantCard = ({
     play_instrument: '',
     readiness: '',
     finish_time: '',
+    meeting_participation: '',
   });
 
   const fetchEachApplicant = async () => {
@@ -112,6 +120,7 @@ const ApplicantCard = ({
         play_instrument: detailData.play_instrument,
         readiness: detailData.readiness,
         finish_time: timeData.finish_time, // 이제 데이터가 정상 매핑됩니다.
+        meeting_participation: timeData.meeting, // 뒤풀이 참여 여부도 매핑
       });
     } catch (error) {
       console.error('데이터를 가져오는 중 오류 발생:', error);
@@ -352,6 +361,14 @@ const ApplicantCard = ({
                 <div className="w-full p-4 pad:p-6 bg-gray-5 rounded-xl text-base">
                   {finish_time}
                 </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <span className="Text-base pad:text-lg text-gray-80 font-semibold">
+                  면접 뒤풀이
+                </span>
+                <span className="w-full p-4 pad:p-6 bg-gray-5 rounded-xl text-base">
+                  {meeting_participation === 'true' ? '참여' : '불참'}
+                </span>
               </div>
             </section>
           </DialogContent>
