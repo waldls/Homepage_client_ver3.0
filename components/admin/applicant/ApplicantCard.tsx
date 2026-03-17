@@ -99,7 +99,7 @@ const ApplicantCard = ({
     play_instrument: '',
     readiness: '',
     finish_time: '',
-    meeting_participation: '',
+    meeting_participation: true,
   });
 
   const fetchEachApplicant = async () => {
@@ -122,6 +122,7 @@ const ApplicantCard = ({
         finish_time: timeData.finish_time, // 이제 데이터가 정상 매핑됩니다.
         meeting_participation: timeData.meeting, // 뒤풀이 참여 여부도 매핑
       });
+      // console.log('지원자 상세 정보:', timeData);
     } catch (error) {
       console.error('데이터를 가져오는 중 오류 발생:', error);
     }
@@ -367,7 +368,7 @@ const ApplicantCard = ({
                   면접 뒤풀이
                 </span>
                 <span className="w-full p-4 pad:p-6 bg-gray-5 rounded-xl text-base">
-                  {meeting_participation === 'true' ? '참여' : '불참'}
+                  {meeting_participation === true ? '참여' : '불참'}
                 </span>
               </div>
             </section>
