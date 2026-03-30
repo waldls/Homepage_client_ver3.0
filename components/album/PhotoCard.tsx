@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
 
 interface PhtoProps {
   id: number;
@@ -18,6 +18,9 @@ const PhotoCard = ({
   isSelected = false,
   onClick,
 }: PhtoProps & { onClick: () => void }) => {
+  const isPreviewImage =
+    imgUrl.startsWith('blob:') || imgUrl.startsWith('data:');
+
   return (
     <div
       onClick={onClick}
@@ -26,7 +29,13 @@ const PhotoCard = ({
       `}
     >
       {/* 배경 이미지 */}
-      <Image src={imgUrl} alt={writer} fill className=" object-cover" />
+      <Image
+        src={imgUrl}
+        alt={writer}
+        fill
+        unoptimized={isPreviewImage}
+        className=" object-cover"
+      />
 
       {/* 오버레이 컨테이너 */}
       <div

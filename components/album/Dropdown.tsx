@@ -16,12 +16,18 @@ type DropdownProps = {
   options: DropdownOption[];
   value: string;
   onChange: (value: string) => void;
+  placeholder?: string;
 };
 
-const Dropdown = ({ options, value, onChange }: DropdownProps) => {
+const Dropdown = ({
+  options,
+  value,
+  onChange,
+  placeholder = '선택',
+}: DropdownProps) => {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement | null>(null);
-  const selected = options.find((o) => o.value === value)?.label ?? '';
+  const selected = options.find((o) => o.value === value)?.label ?? placeholder;
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -46,7 +52,14 @@ const Dropdown = ({ options, value, onChange }: DropdownProps) => {
           onClick={() => setOpen((p) => !p)}
           className="flex w-full items-center justify-between px-3 py-2 font-medium text-black hover:bg-gray-1"
         >
-          <span className="text-md font-medium">{selected}</span>
+          <span
+            className={clsx(
+              'text-md font-medium',
+              value ? 'text-black' : 'text-gray-2'
+            )}
+          >
+            {selected}
+          </span>
           <Image
             src={open ? ChevronUp : ChevronDown}
             alt=""

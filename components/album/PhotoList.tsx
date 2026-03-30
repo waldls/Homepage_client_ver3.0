@@ -1,9 +1,21 @@
 'use client';
 
-import PhotoCard from './PhotoCard';
 import { useState } from 'react';
 
-const PhotoList = () => {
+import PhotoCard from './PhotoCard';
+
+type PhotoItem = {
+  id: number;
+  category: string;
+  writer: string;
+  imgUrl: string;
+};
+
+interface PhotoListProps {
+  photos: PhotoItem[];
+}
+
+const PhotoList = ({ photos }: PhotoListProps) => {
   const [selectedPhotoIds, setSelectedPhotoIds] = useState<number[]>([]);
 
   const handleToggle = (id: number) => {
@@ -16,16 +28,16 @@ const PhotoList = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 mb:grid-cols-2 pad:grid-cols-3 dt:grid-cols-4 gap-5 p-16 pad:p-5 w-auto items-center">
-      {[1, 2, 3, 4, 5].map((num) => (
+    <div className="grid w-full grid-cols-1 gap-5 p-5 mb:grid-cols-2 pad:grid-cols-3 dt:grid-cols-4">
+      {photos.map((photo) => (
         <PhotoCard
-          key={num}
-          id={num}
-          category="송년회"
-          writer={`이윤서 ${num}`}
-          imgUrl="/image/album/thumbnail_ex.jpg"
-          isSelected={selectedPhotoIds.includes(num)}
-          onClick={() => handleToggle(num)}
+          key={photo.id}
+          id={photo.id}
+          category={photo.category}
+          writer={photo.writer}
+          imgUrl={photo.imgUrl}
+          isSelected={selectedPhotoIds.includes(photo.id)}
+          onClick={() => handleToggle(photo.id)}
         />
       ))}
     </div>
