@@ -9,6 +9,7 @@ interface PhtoProps {
   writer: string;
   imgUrl: string;
   isSelected?: boolean;
+  isSelectMode?: boolean;
 }
 
 const PhotoCard = ({
@@ -16,6 +17,7 @@ const PhotoCard = ({
   writer,
   imgUrl,
   isSelected = false,
+  isSelectMode = false,
   onClick,
 }: PhtoProps & { onClick: () => void }) => {
   const isPreviewImage =
@@ -23,9 +25,10 @@ const PhotoCard = ({
 
   return (
     <div
-      onClick={onClick}
+      onClick={isSelectMode ? onClick : undefined}
       className={`
-        relative aspect-square p-2 w-full rounded-xl overflow-hidden cursor-pointer transition-all
+        relative aspect-square p-2 w-full rounded-xl overflow-hidden transition-all
+        ${isSelectMode ? 'cursor-pointer' : 'cursor-default'}
       `}
     >
       {/* 배경 이미지 */}

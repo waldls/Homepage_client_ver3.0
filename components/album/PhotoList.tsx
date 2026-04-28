@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 import PhotoCard from './PhotoCard';
 
 type PhotoItem = {
@@ -13,20 +11,17 @@ type PhotoItem = {
 
 interface PhotoListProps {
   photos: PhotoItem[];
+  selectedPhotoIds?: number[];
+  onToggle?: (id: number) => void;
+  isSelectMode?: boolean;
 }
 
-const PhotoList = ({ photos }: PhotoListProps) => {
-  const [selectedPhotoIds, setSelectedPhotoIds] = useState<number[]>([]);
-
-  const handleToggle = (id: number) => {
-    setSelectedPhotoIds((prev) =>
-      // 이미 배열에 있으면 제거(해제), 없으면 추가(선택)
-      prev.includes(id)
-        ? prev.filter((photoId) => photoId !== id)
-        : [...prev, id]
-    );
-  };
-
+const PhotoList = ({
+  photos,
+  selectedPhotoIds = [],
+  onToggle = () => {},
+  isSelectMode = false,
+}: PhotoListProps) => {
   return (
     <div className="grid w-full grid-cols-1 gap-5 p-5 mb:grid-cols-2 pad:grid-cols-3 dt:grid-cols-4">
       {photos.map((photo) => (
@@ -37,7 +32,8 @@ const PhotoList = ({ photos }: PhotoListProps) => {
           writer={photo.writer}
           imgUrl={photo.imgUrl}
           isSelected={selectedPhotoIds.includes(photo.id)}
-          onClick={() => handleToggle(photo.id)}
+          isSelectMode={isSelectMode}
+          onClick={() => onToggle(photo.id)}
         />
       ))}
     </div>

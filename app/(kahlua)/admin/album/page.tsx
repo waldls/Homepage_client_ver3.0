@@ -5,8 +5,10 @@ import { useEffect, useState } from 'react';
 import { getUserInfo } from '@/api/user/user';
 import AlbumBanner from '@/components/album/AlbumBanner';
 import AlbumFolder from '@/components/album/AlbumFolder';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
+  const router = useRouter();
   const [userTerm, setUserTerm] = useState<number | null>(null);
 
   useEffect(() => {
@@ -32,7 +34,10 @@ const Page = () => {
           <p className="font-pretendard text-center text-black text-[24px] font-semibold">
             깔루아 공유 앨범
           </p>
-          <button className="w-[172px] h-[43px] bg-yellow-main rounded-[43px] text-[24px] font-medium">
+          <button
+            className="w-[172px] h-[43px] bg-yellow-main rounded-[43px] text-[24px] font-medium"
+            onClick={() => router.push('/admin/album/list')}
+          >
             보러가기
           </button>
         </div>

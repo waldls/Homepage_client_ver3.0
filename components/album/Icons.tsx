@@ -41,7 +41,7 @@ const ICONS_MAP: Record<IconType, IconData> = {
   },
 };
 
-const Icons = ({ type }: { type: IconType }) => {
+const Icons = ({ type, onClick }: { type: IconType; onClick?: () => void }) => {
   const [isHovered, setIsHovered] = useState(false);
   const iconData = ICONS_MAP[type];
 
@@ -59,6 +59,7 @@ const Icons = ({ type }: { type: IconType }) => {
     <img
       src={currentSrc}
       alt={type}
+      onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={iconStyle}
