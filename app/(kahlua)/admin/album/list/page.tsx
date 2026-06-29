@@ -1,68 +1,179 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import {
+  batchDownloadPhotos,
+  deleteAlbumPhotos,
+  getAlbumPhotos,
+  getPhotoDownloadUrl,
+} from '@/api/album/album';
 import Banner from '@/components/album/Banner';
+import Button from '@/components/album/Button';
 import Category from '@/components/album/Category';
 import Dropdown from '@/components/album/Dropdown';
-import PhotoList from '@/components/album/PhotoList';
-import Button from '@/components/album/Button';
 import Icon from '@/components/album/Icons';
+import Modal from '@/components/album/Modal';
+import PhotoList from '@/components/album/PhotoList';
+import type { AlbumListCategory, AlbumPhoto } from '@/types/album';
 
-const CATEGORIES: { label: string; type?: 'default' | 'kahlua' | 'crew' }[] = [
-  { label: '전체' },
-  { label: '창립제' },
-  { label: '송년회' },
-  { label: '공연' },
-  { label: '기타' },
-  { label: '반응한 사진', type: 'kahlua' },
+const ALBUM_ID = 1;
+
+type CategoryValue = AlbumListCategory | '전체';
+
+const CATEGORIES: { label: string; value: CategoryValue }[] = [
+  { label: '전체', value: '전체' },
+  { label: '창립제', value: 'FOUNDATION_FESTIVAL' },
+  { label: '송년회', value: 'YEAR_END_PARTY' },
+  { label: '공연', value: 'PERFORMANCE' },
+  { label: '기타', value: 'ETC' },
 ];
 
-const MOCK_PHOTOS = [
-  { id: 1, imgUrl: '/image/album/thumbnail_ex.jpg', category: '공연', writer: '이윤서' },
-  { id: 2, imgUrl: '/image/album/thumbnail_ex.jpg', category: '기타', writer: '이윤서' },
-  { id: 3, imgUrl: '/image/album/thumbnail_ex.jpg', category: '창립제', writer: '이윤서' },
-  { id: 4, imgUrl: '/image/album/thumbnail_ex.jpg', category: '송년회', writer: '이윤서' },
-  { id: 5, imgUrl: '/image/album/thumbnail_ex.jpg', category: '공연', writer: '이윤서' },
-];
+const fixUrl = (url: string) => url.replace(/(amazonaws\.com)([^/])/, '$1/$2');
+
+const CATEGORY_KO: Record<string, string> = {
+  FOUNDATION_FESTIVAL: '창립제',
+  YEAR_END_PARTY: '송년회',
+  PERFORMANCE: '공연',
+  ETC: '기타',
+};
+
+const toPhotoItem = (photo: AlbumPhoto) => ({
+  id: photo.photoId,
+  imgUrl: fixUrl(photo.thumbnailUrl),
+  category: CATEGORY_KO[photo.category] ?? photo.category,
+  writer: photo.uploaderName,
+});
 
 const AlbumListPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState('전체');
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryValue>('전체');
   const [isSelectMode, setIsSelectMode] = useState(false);
   const [selectedPhotoIds, setSelectedPhotoIds] = useState<number[]>([]);
+  const [photos, setPhotos] = useState<AlbumPhoto[]>([]);
+  const [cursor, setCursor] = useState<number | null>(null);
+  const [hasNext, setHasNext] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const observerRef = useRef<HTMLDivElement>(null);
 
-  // 개별 사진 선택 토글
+  const fetchPhotos = useCallback(
+    async (category: CategoryValue, nextCursor?: number | null) => {
+      setIsLoading(true);
+      try {
+        const result = await getAlbumPhotos(ALBUM_ID, {
+          category: category === '전체' ? undefined : category,
+          cursor: nextCursor ?? undefined,
+          size: 20,
+        });
+        const incoming = result.content ?? [];
+        setPhotos((prev) => (nextCursor ? [...prev, ...incoming] : incoming));
+        setCursor(result.cursor ?? null);
+        setHasNext(result.hasNext ?? false);
+      } catch (error) {
+        console.error('사진 목록을 불러오지 못했습니다.', error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    setPhotos([]);
+    setCursor(null);
+    fetchPhotos(selectedCategory, null);
+  }, [selectedCategory, fetchPhotos]);
+
+  useEffect(() => {
+    if (!observerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNext && !isLoading) {
+          fetchPhotos(selectedCategory, cursor);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(observerRef.current);
+    return () => observer.disconnect();
+  }, [hasNext, isLoading, cursor, selectedCategory, fetchPhotos]);
+
   const handleToggle = (id: number) => {
     setSelectedPhotoIds((prev) =>
       prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
     );
   };
 
-  // 전체 선택 토글: 전부 선택됐으면 전체 해제, 아니면 전체 선택
   const handleSelectAll = () => {
-    if (selectedPhotoIds.length === MOCK_PHOTOS.length) {
+    if (selectedPhotoIds.length === photos.length) {
       setSelectedPhotoIds([]);
     } else {
-      setSelectedPhotoIds(MOCK_PHOTOS.map((p) => p.id));
+      setSelectedPhotoIds(photos.map((p) => p.photoId));
     }
   };
 
-  // 선택 모드 초기화
   const handleReset = () => {
     setIsSelectMode(false);
     setSelectedPhotoIds([]);
   };
 
-  // 선택된 사진 저장 (다운로드)
-  const handleSave = () => {
-    selectedPhotoIds.forEach((id) => {
-      const photo = MOCK_PHOTOS.find((p) => p.id === id);
-      if (!photo) return;
+  const handleSave = async () => {
+    if (selectedPhotoIds.length === 0) return;
+
+    if (selectedPhotoIds.length === 1) {
+      try {
+        const { downloadUrl, fileName } = await getPhotoDownloadUrl(
+          ALBUM_ID,
+          selectedPhotoIds[0]
+        );
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = fileName;
+        a.click();
+      } catch (error) {
+        console.error('다운로드 URL 발급에 실패했습니다.', error);
+      }
+      return;
+    }
+
+    try {
+      const blob = await batchDownloadPhotos(ALBUM_ID, selectedPhotoIds);
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = photo.imgUrl;
-      a.download = `photo_${id}`;
+      a.href = url;
+      a.download = 'kahlua_photos.zip';
       a.click();
-    });
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('일괄 다운로드에 실패했습니다.', error);
+    }
   };
+
+  const handleDeleteClick = () => {
+    if (selectedPhotoIds.length === 0) return;
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteAlbumPhotos(ALBUM_ID, selectedPhotoIds);
+      setPhotos((prev) =>
+        prev.filter((p) => !selectedPhotoIds.includes(p.photoId))
+      );
+      setSelectedPhotoIds([]);
+      setIsSelectMode(false);
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      console.error('사진 삭제에 실패했습니다.', error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const photoItems = photos.map(toPhotoItem);
 
   return (
     <div className="flex" onClick={handleReset}>
@@ -71,64 +182,105 @@ const AlbumListPage = () => {
         <div className="w-full ph:px-5 pad:px-0">
           <div className="flex flex-col gap-[18px]">
             {/* ph: 드롭다운 */}
-            <div className="flex flex-row justify-between items-center pad:hidden" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="flex flex-row justify-between items-center pad:hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
               <Dropdown
-                options={CATEGORIES.map(({ label }) => ({ label, value: label }))}
+                options={CATEGORIES.map(({ label, value }) => ({
+                  label,
+                  value,
+                }))}
                 value={selectedCategory}
-                onChange={setSelectedCategory}
+                onChange={(v) => setSelectedCategory(v as CategoryValue)}
               />
               <div className="flex items-center gap-2">
                 {isSelectMode && (
-                  <Icon type="download" onClick={handleSave} />
+                  <>
+                    <Icon type="delete" onClick={handleDeleteClick} />
+                    <Icon type="download" onClick={handleSave} />
+                  </>
                 )}
                 <Button
                   label={isSelectMode ? '전체 선택' : '선택하기'}
                   variant="tertiary"
-                  onClick={isSelectMode ? handleSelectAll : () => setIsSelectMode(true)}
+                  onClick={
+                    isSelectMode ? handleSelectAll : () => setIsSelectMode(true)
+                  }
                 />
               </div>
             </div>
 
             {/* pad+: 탭 */}
-            <div className="hidden pad:flex flex-row justify-between items-center" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="hidden pad:flex flex-row justify-between items-center"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="flex flex-row gap-2">
-                {CATEGORIES.map(({ label, type }) => (
+                {CATEGORIES.map(({ label, value }) => (
                   <Category
-                    key={label}
+                    key={value}
                     label={label}
-                    type={type}
-                    selected={selectedCategory === label}
-                    onClick={() => setSelectedCategory(label)}
+                    selected={selectedCategory === value}
+                    onClick={() => setSelectedCategory(value)}
                   />
                 ))}
               </div>
               <div className="flex flex-row items-center gap-3">
                 {isSelectMode && (
-                  <Icon type="download" onClick={handleSave} />
+                  <>
+                    <Icon type="delete" onClick={handleDeleteClick} />
+                    <Icon type="download" onClick={handleSave} />
+                  </>
                 )}
                 <Button
                   label={isSelectMode ? '전체 선택' : '선택하기'}
                   variant="tertiary"
-                  onClick={isSelectMode ? handleSelectAll : () => setIsSelectMode(true)}
+                  onClick={
+                    isSelectMode ? handleSelectAll : () => setIsSelectMode(true)
+                  }
                 />
               </div>
             </div>
 
             <div id="photo-list" onClick={(e) => e.stopPropagation()}>
               <PhotoList
-                photos={
-                  selectedCategory === '전체'
-                    ? MOCK_PHOTOS
-                    : MOCK_PHOTOS.filter((p) => p.category === selectedCategory)
-                }
+                photos={photoItems}
                 selectedPhotoIds={selectedPhotoIds}
                 onToggle={handleToggle}
                 isSelectMode={isSelectMode}
               />
+              {isLoading && (
+                <p className="text-center text-sm text-gray-2 py-6">
+                  불러오는 중...
+                </p>
+              )}
+              <div ref={observerRef} className="h-4" />
             </div>
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => !isDeleting && setIsDeleteModalOpen(false)}
+        closeOnOverlayClick={!isDeleting}
+      >
+        <p>사진을 삭제합니다.</p>
+        <p>선택한 {selectedPhotoIds.length}장이 삭제됩니다.</p>
+        <Button
+          label="취소"
+          variant="cancel"
+          onClick={() => setIsDeleteModalOpen(false)}
+          disabled={isDeleting}
+        />
+        <Button
+          label={isDeleting ? '삭제 중...' : '삭제'}
+          variant="delete"
+          onClick={confirmDelete}
+          disabled={isDeleting}
+        />
+      </Modal>
     </div>
   );
 };

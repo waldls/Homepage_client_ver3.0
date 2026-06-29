@@ -1,12 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import type { ChangeEvent, DragEvent } from 'react';
 
-import { authInstance } from '@/api/auth/axios';
-import { getPresignedUrl } from '@/api/s3/s3';
+import { getPresignedUrls, uploadPhotosToAlbum } from '@/api/album/album';
 import { getUserInfo } from '@/api/user/user';
 import AlbumBanner from '@/components/album/AlbumBanner';
 import Button from '@/components/album/Button';
@@ -15,26 +14,27 @@ import Dropdown from '@/components/album/Dropdown';
 import Modal from '@/components/album/Modal';
 import PhotoList from '@/components/album/PhotoList';
 import PhotoPlus from '@/public/image/album/icons/photo-plus.svg';
+import type { AlbumCategory } from '@/types/album';
 
-const CATEGORY_OPTIONS = [
-  { label: '창립제', value: '창립제' },
-  { label: '송년회', value: '송년회' },
-  { label: '공연', value: '공연' },
-  { label: '기타', value: '기타' },
+const CATEGORY_OPTIONS: { label: string; value: AlbumCategory }[] = [
+  { label: '창립제', value: 'FOUNDING' },
+  { label: '송년회', value: 'YEAR_END' },
+  { label: '공연', value: 'PERFORMANCE' },
+  { label: '기타', value: 'ETC' },
 ];
 
 const MAX_PHOTOS = 20;
 
 type UploadPhoto = {
   id: number;
-  category: string;
+  category: AlbumCategory;
   writer: string;
   imgUrl: string;
   file: File;
 };
 
 const Page = () => {
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState<AlbumCategory>('PERFORMANCE');
   const [photos, setPhotos] = useState<UploadPhoto[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
@@ -43,6 +43,8 @@ const Page = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const createdUrlsRef = useRef<string[]>([]);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const albumId = Number(searchParams.get('albumId') ?? '1');
 
   useEffect(() => {
     return () => {
@@ -126,32 +128,6 @@ const Page = () => {
     setIsDragging(false);
   };
 
-  const uploadPhotoFile = async (photo: UploadPhoto, index: number) => {
-    const extension = photo.file.name.includes('.')
-      ? photo.file.name.slice(photo.file.name.lastIndexOf('.'))
-      : '';
-    const imageName = `album-${Date.now()}-${index}${extension}`;
-    const { presignedUrl, imageUrl } = await getPresignedUrl(imageName);
-
-    const uploadResponse = await fetch(presignedUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': photo.file.type || 'application/octet-stream',
-      },
-      body: photo.file,
-    });
-
-    if (!uploadResponse.ok) {
-      throw new Error(`이미지 업로드 실패: ${photo.file.name}`);
-    }
-
-    return {
-      category: photo.category,
-      writer: photo.writer,
-      imageUrl,
-    };
-  };
-
   const handleUpload = () => {
     if (photos.length === 0 || isUploading) return;
     setIsUploadModalOpen(true);
@@ -168,23 +144,46 @@ const Page = () => {
     try {
       setIsUploading(true);
 
-      const uploadedPhotos = await Promise.all(
-        photos.map((photo, index) => uploadPhotoFile(photo, index))
-      );
+      const fileRequests = photos.map((photo) => ({
+        fileName: photo.file.name,
+        fileType: photo.file.type || 'application/octet-stream',
+      }));
+
+      const urlList = await getPresignedUrls(albumId, fileRequests);
 
       await Promise.all(
-        uploadedPhotos.map((photo) => authInstance.post('/album/create', photo))
+        photos.map(async (photo, index) => {
+          const { presignedUrl } = urlList[index];
+          const res = await fetch(presignedUrl, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': photo.file.type || 'application/octet-stream',
+            },
+            body: photo.file,
+          });
+          if (!res.ok)
+            throw new Error(`이미지 업로드 실패: ${photo.file.name}`);
+        })
       );
+
+      const photoPayload = photos.map((photo, index) => {
+        const { s3Key } = urlList[index];
+        return {
+          s3Key,
+          category: photo.category,
+          uploader: photo.writer,
+        };
+      });
+
+      await uploadPhotosToAlbum(albumId, photoPayload);
 
       createdUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
       createdUrlsRef.current = [];
       setPhotos([]);
       setIsUploadModalOpen(false);
-      alert('앨범 업로드가 완료되었습니다.');
-      router.push('/admin/album');
+      router.push('/admin/album/list');
     } catch (error) {
       console.error('앨범 업로드 실패:', error);
-      alert('앨범 업로드에 실패했습니다.');
     } finally {
       setIsUploading(false);
     }
@@ -199,7 +198,7 @@ const Page = () => {
             <Dropdown
               options={CATEGORY_OPTIONS}
               value={selected}
-              onChange={setSelected}
+              onChange={(v) => setSelected(v as AlbumCategory)}
               placeholder="카테고리"
             />
           </div>
@@ -313,4 +312,10 @@ const Page = () => {
   );
 };
 
-export default Page;
+const UploadPage = () => (
+  <Suspense>
+    <Page />
+  </Suspense>
+);
+
+export default UploadPage;

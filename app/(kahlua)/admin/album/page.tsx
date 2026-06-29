@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { getAlbumPhotos } from '@/api/album/album';
 import { getUserInfo } from '@/api/user/user';
 import AlbumBanner from '@/components/album/AlbumBanner';
 import AlbumFolder from '@/components/album/AlbumFolder';
@@ -10,14 +11,19 @@ import { useRouter } from 'next/navigation';
 const Page = () => {
   const router = useRouter();
   const [userTerm, setUserTerm] = useState<number | null>(null);
+  const [latestThumbnail, setLatestThumbnail] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
       try {
-        const userInfo = await getUserInfo();
+        const [userInfo, albumData] = await Promise.all([
+          getUserInfo(),
+          getAlbumPhotos(1, { size: 1 }),
+        ]);
         setUserTerm(userInfo.term ?? null);
+        setLatestThumbnail(albumData.content[0]?.thumbnailUrl ?? null);
       } catch (error) {
-        console.error('사용자 정보를 불러오지 못했습니다.', error);
+        console.error('데이터를 불러오지 못했습니다.', error);
       }
     })();
   }, []);
@@ -29,7 +35,7 @@ const Page = () => {
         <div className="flex flex-col gap-8 items-center">
           <AlbumFolder
             type="KAHLUA"
-            thumbnailUrl="/image/album/thumbnail_ex.jpg"
+            thumbnailUrl={latestThumbnail ?? '/image/album/thumbnail_ex.jpg'}
           />
           <p className="font-pretendard text-center text-black text-[24px] font-semibold">
             깔루아 공유 앨범

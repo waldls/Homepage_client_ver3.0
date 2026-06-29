@@ -21,7 +21,9 @@ const PhotoCard = ({
   onClick,
 }: PhtoProps & { onClick: () => void }) => {
   const isPreviewImage =
-    imgUrl.startsWith('blob:') || imgUrl.startsWith('data:');
+    imgUrl.startsWith('blob:') ||
+    imgUrl.startsWith('data:') ||
+    imgUrl.startsWith('https://');
 
   return (
     <div
