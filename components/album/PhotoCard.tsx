@@ -2,35 +2,50 @@
 
 import Image from 'next/image';
 import React from 'react';
+import { CATEGORY_LABEL } from '@/types/album';
 
-interface PhtoProps {
+interface PhotoProps {
   id: number;
   category: string;
   writer: string;
   imgUrl: string;
   isSelected?: boolean;
   isSelectMode?: boolean;
+  onSelect?: () => void; // 선택 모드일 때 실행될 함수
+  onClick?: () => void; // 일반 모드(모달 열기)일 때 실행될 함수
 }
 
 const PhotoCard = ({
   category,
   writer,
-  imgUrl,
+  imgUrl = '',
   isSelected = false,
   isSelectMode = false,
+  onSelect,
   onClick,
-}: PhtoProps & { onClick: () => void }) => {
+}: PhotoProps) => {
   const isPreviewImage =
     imgUrl.startsWith('blob:') ||
     imgUrl.startsWith('data:') ||
     imgUrl.startsWith('https://');
 
+  const displayCategory =
+    CATEGORY_LABEL[category as keyof typeof CATEGORY_LABEL] || category;
+
+  // 모드에 따라 알맞은 클릭 이벤트를 실행하는 핸들러
+  const handleClick = () => {
+    if (isSelectMode) {
+      onSelect?.();
+    } else {
+      onClick?.();
+    }
+  };
+
   return (
     <div
-      onClick={isSelectMode ? onClick : undefined}
+      onClick={handleClick}
       className={`
-        relative aspect-square p-2 w-full rounded-xl overflow-hidden transition-all
-        ${isSelectMode ? 'cursor-pointer' : 'cursor-default'}
+        relative aspect-square p-2 w-full rounded-xl overflow-hidden transition-all cursor-pointer
       `}
     >
       {/* 배경 이미지 */}
@@ -39,7 +54,7 @@ const PhotoCard = ({
         alt={writer}
         fill
         unoptimized={isPreviewImage}
-        className=" object-cover"
+        className="object-cover"
       />
 
       {/* 오버레이 컨테이너 */}
@@ -67,7 +82,7 @@ const PhotoCard = ({
           {/* 오른쪽 상단 카테고리 뱃지 */}
           <div className="flex justify-end">
             <span className="bg-gray-0/70 border-2 border-gray-0 px-3 rounded-full text-xs font-semibold text-black">
-              {category}
+              {displayCategory}
             </span>
           </div>
         </div>

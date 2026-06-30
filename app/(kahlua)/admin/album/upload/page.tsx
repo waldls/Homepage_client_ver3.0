@@ -14,7 +14,7 @@ import Dropdown from '@/components/album/Dropdown';
 import Modal from '@/components/album/Modal';
 import PhotoList from '@/components/album/PhotoList';
 import PhotoPlus from '@/public/image/album/icons/photo-plus.svg';
-import type { AlbumCategory } from '@/types/album';
+import type { AlbumCategory, PhotoBase } from '@/types/album';
 
 const CATEGORY_OPTIONS: { label: string; value: AlbumCategory }[] = [
   { label: '창립제', value: 'FOUNDING' },
@@ -25,11 +25,7 @@ const CATEGORY_OPTIONS: { label: string; value: AlbumCategory }[] = [
 
 const MAX_PHOTOS = 20;
 
-type UploadPhoto = {
-  id: number;
-  category: AlbumCategory;
-  writer: string;
-  imgUrl: string;
+type UploadPhoto = PhotoBase & {
   file: File;
 };
 
@@ -92,15 +88,15 @@ const Page = () => {
       alert(`사진은 최대 ${MAX_PHOTOS}장까지 업로드할 수 있습니다.`);
     }
 
-    const nextPhotos = limitedFiles.map((file, index) => {
+    const nextPhotos: UploadPhoto[] = limitedFiles.map((file, index) => {
       const imgUrl = URL.createObjectURL(file);
       createdUrlsRef.current.push(imgUrl);
 
       return {
-        id: Date.now() + index,
+        photoId: Date.now() + index,
         category: selected || '미분류',
-        writer: userName,
-        imgUrl,
+        uploaderName: userName,
+        thumbnailUrl: imgUrl,
         file,
       };
     });
@@ -170,8 +166,8 @@ const Page = () => {
         const { s3Key } = urlList[index];
         return {
           s3Key,
-          category: photo.category,
-          uploader: photo.writer,
+          category: photo.category as AlbumCategory,
+          uploader: photo.uploaderName,
         };
       });
 
@@ -263,7 +259,7 @@ const Page = () => {
                   </button>
                 )}
               </div>
-              <PhotoList photos={photos} />
+              <PhotoList photos={photos} albumId={albumId} />
             </>
           ) : (
             <>

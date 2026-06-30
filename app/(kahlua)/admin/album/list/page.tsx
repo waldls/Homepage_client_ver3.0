@@ -7,6 +7,7 @@ import {
   deleteAlbumPhotos,
   getAlbumPhotos,
   getPhotoDownloadUrl,
+  getMyReactionPhotos,
 } from '@/api/album/album';
 import Banner from '@/components/album/Banner';
 import Button from '@/components/album/Button';
@@ -31,21 +32,31 @@ const CATEGORIES: { label: string; value: CategoryValue }[] = [
 
 const fixUrl = (url: string) => url.replace(/(amazonaws\.com)([^/])/, '$1/$2');
 
-const CATEGORY_KO: Record<string, string> = {
-  FOUNDATION_FESTIVAL: '창립제',
-  YEAR_END_PARTY: '송년회',
-  PERFORMANCE: '공연',
-  ETC: '기타',
-};
+// const CATEGORY_KO: Record<string, string> = {
+//   FOUNDATION_FESTIVAL: '창립제',
+//   YEAR_END_PARTY: '송년회',
+//   PERFORMANCE: '공연',
+//   ETC: '기타',
+// };
 
-const toPhotoItem = (photo: AlbumPhoto) => ({
-  id: photo.photoId,
-  imgUrl: fixUrl(photo.thumbnailUrl),
-  category: CATEGORY_KO[photo.category] ?? photo.category,
-  writer: photo.uploaderName,
-});
+const dropdownOptions = [
+  ...CATEGORIES,
+  { label: '반응한 사진', value: 'MY_REACTION' },
+];
+
+// const toPhotoItem = (photo: AlbumPhoto) => ({
+//   id: photo.photoId,
+//   imgUrl: fixUrl(photo.thumbnailUrl),
+//   category: CATEGORY_KO[photo.category] ?? photo.category,
+//   writer: photo.uploaderName,
+//   date: photo.createdAt,
+//   reactions: photo.reactions || [],
+// });
 
 const AlbumListPage = () => {
+  type ViewMode = 'ALL' | 'MY_REACTION';
+  const [viewMode, setViewMode] = useState<ViewMode>('ALL');
+
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryValue>('전체');
   const [isSelectMode, setIsSelectMode] = useState(false);
@@ -59,20 +70,40 @@ const AlbumListPage = () => {
   const observerRef = useRef<HTMLDivElement>(null);
 
   const fetchPhotos = useCallback(
-    async (category: CategoryValue, nextCursor?: number | null) => {
+    async (
+      category: CategoryValue,
+      mode: ViewMode,
+      nextCursor?: number | null
+    ) => {
       setIsLoading(true);
       try {
-        const result = await getAlbumPhotos(ALBUM_ID, {
-          category: category === '전체' ? undefined : category,
-          cursor: nextCursor ?? undefined,
-          size: 20,
-        });
-        const incoming = result.content ?? [];
+        let result;
+        if (mode === 'MY_REACTION') {
+          result = await getMyReactionPhotos(ALBUM_ID, {
+            cursor: nextCursor ?? undefined,
+            size: 20,
+          });
+        } else {
+          result = await getAlbumPhotos(ALBUM_ID, {
+            category: category === '전체' ? undefined : category,
+            cursor: nextCursor ?? undefined,
+            size: 20,
+          });
+        }
+
+        let incoming = result.content ?? [];
+
+        if (mode === 'MY_REACTION' && category !== '전체') {
+          incoming = incoming.filter(
+            (p: AlbumPhoto) => p.category === category
+          );
+        }
+
         setPhotos((prev) => (nextCursor ? [...prev, ...incoming] : incoming));
         setCursor(result.cursor ?? null);
         setHasNext(result.hasNext ?? false);
       } catch (error) {
-        console.error('사진 목록을 불러오지 못했습니다.', error);
+        console.error('불러오기 실패:', error);
       } finally {
         setIsLoading(false);
       }
@@ -83,22 +114,28 @@ const AlbumListPage = () => {
   useEffect(() => {
     setPhotos([]);
     setCursor(null);
-    fetchPhotos(selectedCategory, null);
-  }, [selectedCategory, fetchPhotos]);
+    fetchPhotos(selectedCategory, viewMode);
+  }, [selectedCategory, viewMode, fetchPhotos]);
 
   useEffect(() => {
-    if (!observerRef.current) return;
+    setPhotos([]);
+    setCursor(null);
+    fetchPhotos(selectedCategory, viewMode, null);
+  }, [selectedCategory, viewMode, fetchPhotos]);
+
+  useEffect(() => {
+    if (!observerRef.current || !hasNext || isLoading) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && hasNext && !isLoading) {
-          fetchPhotos(selectedCategory, cursor);
+        if (entry.isIntersecting) {
+          fetchPhotos(selectedCategory, viewMode, cursor);
         }
       },
       { threshold: 0.1 }
     );
     observer.observe(observerRef.current);
     return () => observer.disconnect();
-  }, [hasNext, isLoading, cursor, selectedCategory, fetchPhotos]);
+  }, [hasNext, isLoading, cursor, selectedCategory, viewMode, fetchPhotos]);
 
   const handleToggle = (id: number) => {
     setSelectedPhotoIds((prev) =>
@@ -173,8 +210,6 @@ const AlbumListPage = () => {
     }
   };
 
-  const photoItems = photos.map(toPhotoItem);
-
   return (
     <div className="flex" onClick={handleReset}>
       <div className="flex flex-col justify-center dt:w-[1200px] pad:w-[786px] ph:w-[500px] mx-auto">
@@ -187,12 +222,18 @@ const AlbumListPage = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <Dropdown
-                options={CATEGORIES.map(({ label, value }) => ({
-                  label,
-                  value,
-                }))}
-                value={selectedCategory}
-                onChange={(v) => setSelectedCategory(v as CategoryValue)}
+                options={dropdownOptions}
+                value={
+                  viewMode === 'MY_REACTION' ? 'MY_REACTION' : selectedCategory
+                }
+                onChange={(v) => {
+                  if (v === 'MY_REACTION') {
+                    setViewMode('MY_REACTION');
+                  } else {
+                    setViewMode('ALL');
+                    setSelectedCategory(v as CategoryValue);
+                  }
+                }}
               />
               <div className="flex items-center gap-2">
                 {isSelectMode && (
@@ -225,6 +266,16 @@ const AlbumListPage = () => {
                     onClick={() => setSelectedCategory(value)}
                   />
                 ))}
+                <Category
+                  label="반응한 사진"
+                  type="kahlua"
+                  selected={viewMode === 'MY_REACTION'}
+                  onClick={() =>
+                    setViewMode((prev) =>
+                      prev === 'MY_REACTION' ? 'ALL' : 'MY_REACTION'
+                    )
+                  }
+                />
               </div>
               <div className="flex flex-row items-center gap-3">
                 {isSelectMode && (
@@ -245,7 +296,8 @@ const AlbumListPage = () => {
 
             <div id="photo-list" onClick={(e) => e.stopPropagation()}>
               <PhotoList
-                photos={photoItems}
+                albumId={ALBUM_ID}
+                photos={photos}
                 selectedPhotoIds={selectedPhotoIds}
                 onToggle={handleToggle}
                 isSelectMode={isSelectMode}

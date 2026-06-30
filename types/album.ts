@@ -4,22 +4,32 @@ export type AlbumListCategory =
   | 'FOUNDATION_FESTIVAL'
   | 'YEAR_END_PARTY'
   | 'PERFORMANCE'
-  | 'ETC';
+  | 'ETC'
+  | 'REACT';
 
 export const CATEGORY_LABEL: Record<AlbumListCategory, string> = {
   FOUNDATION_FESTIVAL: '창립제',
   YEAR_END_PARTY: '송년회',
   PERFORMANCE: '공연',
   ETC: '기타',
+  REACT: '반응한 사진',
 };
 
-export type AlbumPhoto = {
+export type CategoryType = 'default' | 'kahlua' | 'crew';
+
+export type EmojiType = 'LAUGH' | 'ANGRY' | 'SAD' | 'HEART' | 'CONFUSED';
+
+export interface PhotoBase {
   photoId: number;
   thumbnailUrl: string;
-  uploaderName: string;
   category: string;
+  uploaderName: string;
+}
+
+export interface AlbumPhoto extends PhotoBase {
   createdAt: string;
-};
+  reactions?: ReactionData[];
+}
 
 export type AlbumPhotosResponse = {
   isSuccess: boolean;
@@ -91,3 +101,41 @@ export type PhotoUploadResponse = {
     uploadedPhotos: UploadedPhoto[];
   };
 };
+
+export type ReactionData = {
+  emojiType: EmojiType;
+  count: number;
+  clicked: boolean;
+};
+
+interface UploaderInfo {
+  id: number;
+  name: string;
+  term: string;
+}
+
+export interface PhotoDetailResult {
+  photoId: number;
+  originalUrl: string;
+  category: string;
+  uploader: UploaderInfo;
+  createdAt: string;
+  reactions: ReactionData[];
+}
+
+// 리액션 토글
+export interface ReactionToggleResult {
+  photoId: number;
+  emojiType: string;
+  currentCount: number;
+  isClicked: boolean;
+  previousEmojiType?: string | null;
+  previousCount?: number;
+}
+
+export interface ReactionToggleResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: ReactionToggleResult;
+}

@@ -1,8 +1,9 @@
 'use client';
 
 import clsx from 'clsx';
+import { CategoryType } from '@/types/album';
 
-type CategoryType = 'default' | 'kahlua' | 'crew';
+// type CategoryType = 'default' | 'kahlua' | 'crew';
 
 type CategoryProps = {
   label: string;
