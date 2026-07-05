@@ -1,4 +1,8 @@
-export type AlbumCategory = 'PERFORMANCE' | 'FOUNDING' | 'YEAR_END' | 'ETC';
+export type AlbumCategory =
+  | 'FOUNDATION_FESTIVAL'
+  | 'YEAR_END_PARTY'
+  | 'PERFORMANCE'
+  | 'ETC';
 
 export type AlbumListCategory =
   | 'FOUNDATION_FESTIVAL'

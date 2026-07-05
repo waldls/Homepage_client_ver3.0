@@ -12,13 +12,13 @@ import Button from '@/components/album/Button';
 import Category from '@/components/album/Category';
 import Dropdown from '@/components/album/Dropdown';
 import Modal from '@/components/album/Modal';
-import PhotoList from '@/components/album/PhotoList';
+import PhotoCard from '@/components/album/PhotoCard';
 import PhotoPlus from '@/public/image/album/icons/photo-plus.svg';
 import type { AlbumCategory, PhotoBase } from '@/types/album';
 
 const CATEGORY_OPTIONS: { label: string; value: AlbumCategory }[] = [
-  { label: '창립제', value: 'FOUNDING' },
-  { label: '송년회', value: 'YEAR_END' },
+  { label: '창립제', value: 'FOUNDATION_FESTIVAL' },
+  { label: '송년회', value: 'YEAR_END_PARTY' },
   { label: '공연', value: 'PERFORMANCE' },
   { label: '기타', value: 'ETC' },
 ];
@@ -70,6 +70,15 @@ const Page = () => {
     );
   }, [userName]);
 
+  useEffect(() => {
+    setPhotos((prev) =>
+      prev.map((photo) => ({
+        ...photo,
+        category: selected,
+      }))
+    );
+  }, [selected]);
+
   const openFilePicker = () => {
     fileInputRef.current?.click();
   };
@@ -102,6 +111,19 @@ const Page = () => {
     });
 
     setPhotos((prev) => [...prev, ...nextPhotos]);
+  };
+
+  const removePhoto = (photoId: number) => {
+    setPhotos((prev) => {
+      const target = prev.find((photo) => photo.photoId === photoId);
+      if (target) {
+        URL.revokeObjectURL(target.thumbnailUrl);
+        createdUrlsRef.current = createdUrlsRef.current.filter(
+          (url) => url !== target.thumbnailUrl
+        );
+      }
+      return prev.filter((photo) => photo.photoId !== photoId);
+    });
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -166,7 +188,7 @@ const Page = () => {
         const { s3Key } = urlList[index];
         return {
           s3Key,
-          category: photo.category as AlbumCategory,
+          category: selected,
           uploader: photo.uploaderName,
         };
       });
@@ -259,7 +281,18 @@ const Page = () => {
                   </button>
                 )}
               </div>
-              <PhotoList photos={photos} albumId={albumId} />
+              <div className="grid w-full grid-cols-1 gap-5 p-5 mb:grid-cols-2 pad:grid-cols-3 dt:grid-cols-4">
+                {photos.map((photo) => (
+                  <PhotoCard
+                    key={photo.photoId}
+                    id={photo.photoId}
+                    category={photo.category}
+                    writer={photo.uploaderName}
+                    imgUrl={photo.thumbnailUrl}
+                    onClick={() => removePhoto(photo.photoId)}
+                  />
+                ))}
+              </div>
             </>
           ) : (
             <>
