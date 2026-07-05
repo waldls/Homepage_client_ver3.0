@@ -17,6 +17,8 @@ import Icon from '@/components/album/Icons';
 import Modal from '@/components/album/Modal';
 import PhotoList from '@/components/album/PhotoList';
 import type { AlbumListCategory, AlbumPhoto } from '@/types/album';
+import { useUserStore } from '@/store/useUserStore';
+import { getUserInfo } from '@/api/user/user';
 
 const ALBUM_ID = 1;
 
@@ -30,7 +32,7 @@ const CATEGORIES: { label: string; value: CategoryValue }[] = [
   { label: '기타', value: 'ETC' },
 ];
 
-const fixUrl = (url: string) => url.replace(/(amazonaws\.com)([^/])/, '$1/$2');
+// const fixUrl = (url: string) => url.replace(/(amazonaws\.com)([^/])/, '$1/$2');
 
 // const CATEGORY_KO: Record<string, string> = {
 //   FOUNDATION_FESTIVAL: '창립제',
@@ -68,6 +70,8 @@ const AlbumListPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const observerRef = useRef<HTMLDivElement>(null);
+
+  const setUserId = useUserStore((state) => state.setUserId);
 
   const fetchPhotos = useCallback(
     async (
@@ -137,6 +141,21 @@ const AlbumListPage = () => {
     return () => observer.disconnect();
   }, [hasNext, isLoading, cursor, selectedCategory, viewMode, fetchPhotos]);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userInfo = await getUserInfo();
+        setUserId(userInfo.id);
+      } catch (error) {
+        console.error('유저 정보 가져오기 실패:', error);
+      }
+    };
+
+    if (!useUserStore.getState().userId) {
+      fetchUser();
+    }
+  }, [setUserId]);
+
   const handleToggle = (id: number) => {
     setSelectedPhotoIds((prev) =>
       prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
@@ -194,22 +213,42 @@ const AlbumListPage = () => {
   };
 
   const confirmDelete = async () => {
+    const myUserId = useUserStore.getState().userId;
+
+    if (!myUserId) {
+      alert('유저 정보를 불러오는 중입니다.');
+      return;
+    }
+
+    const validPhotoIdsToDelete = selectedPhotoIds.filter((id) => {
+      const targetPhoto = photos.find((p) => p.photoId === id);
+      return targetPhoto?.uploaderId === myUserId;
+    });
+
+    if (validPhotoIdsToDelete.length === 0) {
+      alert('삭제할 수 있는 사진이 없습니다.');
+      setIsDeleteModalOpen(false);
+      return;
+    }
+
     setIsDeleting(true);
     try {
-      await deleteAlbumPhotos(ALBUM_ID, selectedPhotoIds);
+      await deleteAlbumPhotos(ALBUM_ID, validPhotoIdsToDelete);
+
       setPhotos((prev) =>
-        prev.filter((p) => !selectedPhotoIds.includes(p.photoId))
+        prev.filter((p) => !validPhotoIdsToDelete.includes(p.photoId))
       );
+
       setSelectedPhotoIds([]);
       setIsSelectMode(false);
       setIsDeleteModalOpen(false);
     } catch (error) {
       console.error('사진 삭제에 실패했습니다.', error);
+      alert('사진 삭제 중 오류가 발생했습니다.');
     } finally {
       setIsDeleting(false);
     }
   };
-
   return (
     <div className="flex" onClick={handleReset}>
       <div className="flex flex-col justify-center dt:w-[1200px] pad:w-[786px] ph:w-[500px] mx-auto">
@@ -301,6 +340,11 @@ const AlbumListPage = () => {
                 selectedPhotoIds={selectedPhotoIds}
                 onToggle={handleToggle}
                 isSelectMode={isSelectMode}
+                onDeleteSuccess={(deletedPhotoId) => {
+                  setPhotos((prev) =>
+                    prev.filter((p) => p.photoId !== deletedPhotoId)
+                  );
+                }}
               />
               {isLoading && (
                 <p className="text-center text-sm text-gray-2 py-6">

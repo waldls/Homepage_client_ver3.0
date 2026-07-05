@@ -4,14 +4,15 @@ import React, { useState } from 'react';
 import PhotoCard from './PhotoCard';
 import PhotoModal from './PhotoModal';
 import { getDetailedPhotoInfo } from '@/api/album/album';
-import { AlbumPhoto } from '@/types/album';
+import { PhotoBase } from '@/types/album';
 
 interface PhotoListProps {
   albumId: number;
-  photos: AlbumPhoto[];
+  photos: PhotoBase[];
   selectedPhotoIds?: number[];
   onToggle?: (id: number) => void;
   isSelectMode?: boolean;
+  onDeleteSuccess?: (deletedPhotoId: number) => void;
 }
 
 const PhotoList = ({
@@ -20,11 +21,12 @@ const PhotoList = ({
   selectedPhotoIds = [],
   onToggle = () => {},
   isSelectMode = false,
+  onDeleteSuccess,
 }: PhotoListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState<AlbumPhoto | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<PhotoBase | null>(null);
 
-  const handlePhotoClick = async (photo: AlbumPhoto) => {
+  const handlePhotoClick = async (photo: PhotoBase) => {
     setSelectedPhoto(photo);
     setIsModalOpen(true);
 
@@ -35,10 +37,7 @@ const PhotoList = ({
         ...photo,
         thumbnailUrl: detailData.originalUrl,
         uploaderName: detailData.uploader.name,
-        reactions: detailData.reactions,
-        createdAt: detailData.createdAt,
       });
-      setIsModalOpen(true);
     } catch (error) {
       console.error('상세 정보를 불러오지 못했습니다.', error);
     }
@@ -72,6 +71,11 @@ const PhotoList = ({
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         photo={selectedPhoto}
+        onDeleteSuccess={() => {
+          if (selectedPhoto && onDeleteSuccess) {
+            onDeleteSuccess(selectedPhoto.photoId);
+          }
+        }}
       />
     </>
   );

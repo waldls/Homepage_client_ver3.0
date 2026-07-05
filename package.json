@@ -42,7 +42,8 @@
     "styled-components": "^6.1.11",
     "tailwind-scrollbar-hide": "^1.1.7",
     "uuid": "^11.0.2",
-    "v": "^0.3.0"
+    "v": "^0.3.0",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@types/gtag.js": "^0.0.20",

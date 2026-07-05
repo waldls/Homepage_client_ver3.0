@@ -24,10 +24,11 @@ export interface PhotoBase {
   thumbnailUrl: string;
   category: string;
   uploaderName: string;
+  uploaderId?: number;
 }
 
 export interface AlbumPhoto extends PhotoBase {
-  createdAt: string;
+  createdAt?: string;
   reactions?: ReactionData[];
 }
 
