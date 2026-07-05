@@ -7,7 +7,7 @@ import Image from 'next/image';
 import ReactionWidget from './ReactionWidget';
 import { AlbumPhoto } from '@/types/album';
 import { getPhotoDownloadUrl, deleteAlbumPhotos } from '@/api/album/album';
-import { formatDateTimeMinute } from '@/utils/dateUtils';
+import { formatLocalDateTimeMinute } from '@/utils/dateUtils';
 import ModalBase from './Modal';
 import { useUserStore } from '@/store/useUserStore';
 
@@ -17,6 +17,7 @@ interface PhotoModalProps {
   onClose: () => void;
   photo: AlbumPhoto | null;
   onDeleteSuccess?: () => void;
+  onReactionUpdate?: () => void;
 }
 
 const PhotoModal = ({
@@ -25,6 +26,7 @@ const PhotoModal = ({
   photo,
   albumId,
   onDeleteSuccess,
+  onReactionUpdate,
 }: PhotoModalProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -120,7 +122,8 @@ const PhotoModal = ({
                   {photo.uploaderName}
                 </span>
                 <span className="text-[14px] font-medium text-gray-400">
-                  {photo.createdAt && formatDateTimeMinute(photo.createdAt)}
+                  {photo.createdAt &&
+                    formatLocalDateTimeMinute(photo.createdAt)}
                 </span>
               </div>
               <div className="relative z-10">
@@ -128,6 +131,7 @@ const PhotoModal = ({
                   albumId={albumId}
                   photoId={photo.photoId}
                   initialReactions={photo.reactions || []}
+                  onReactionChange={onReactionUpdate}
                 />
               </div>
             </div>

@@ -226,7 +226,7 @@ const AlbumListPage = () => {
     });
 
     if (validPhotoIdsToDelete.length === 0) {
-      alert('삭제할 수 있는 사진이 없습니다.');
+      alert('내가 업로드한 사진만 삭제할 수 있습니다.');
       setIsDeleteModalOpen(false);
       return;
     }
@@ -301,19 +301,21 @@ const AlbumListPage = () => {
                   <Category
                     key={value}
                     label={label}
-                    selected={selectedCategory === value}
-                    onClick={() => setSelectedCategory(value)}
+                    selected={viewMode === 'ALL' && selectedCategory === value}
+                    onClick={() => {
+                      setViewMode('ALL'); // 일반 모드로 전환
+                      setSelectedCategory(value);
+                    }}
                   />
                 ))}
                 <Category
                   label="반응한 사진"
                   type="kahlua"
                   selected={viewMode === 'MY_REACTION'}
-                  onClick={() =>
-                    setViewMode((prev) =>
-                      prev === 'MY_REACTION' ? 'ALL' : 'MY_REACTION'
-                    )
-                  }
+                  onClick={() => {
+                    setViewMode('MY_REACTION');
+                    setSelectedCategory('전체');
+                  }}
                 />
               </div>
               <div className="flex flex-row items-center gap-3">

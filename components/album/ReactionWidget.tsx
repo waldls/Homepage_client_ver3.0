@@ -10,12 +10,14 @@ interface ReactionWidgetProps {
   albumId: number;
   photoId: number;
   initialReactions: ReactionData[];
+  onReactionChange?: () => void;
 }
 
 const ReactionWidget = ({
   albumId,
   photoId,
   initialReactions,
+  onReactionChange,
 }: ReactionWidgetProps) => {
   const [reactions, setReactions] = useState<ReactionData[]>(
     initialReactions || []
@@ -27,7 +29,6 @@ const ReactionWidget = ({
 
   const handleToggle = async (emojiType: EmojiType) => {
     try {
-      //   const result = await togglePhotoReaction(albumId, photoId, emojiType);
       const result = await togglePhotoReaction(albumId, photoId, emojiType);
 
       setReactions((prev) => {
@@ -67,6 +68,10 @@ const ReactionWidget = ({
 
         return updated;
       });
+
+      if (onReactionChange) {
+        onReactionChange();
+      }
     } catch (error) {
       console.error('이모지 추가에 실패했습니다.', error);
     }

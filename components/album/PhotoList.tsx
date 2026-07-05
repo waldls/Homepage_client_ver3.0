@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import PhotoCard from './PhotoCard';
 import PhotoModal from './PhotoModal';
 import { getDetailedPhotoInfo } from '@/api/album/album';
-import { PhotoBase } from '@/types/album';
+import { AlbumPhoto } from '@/types/album';
 
 interface PhotoListProps {
   albumId: number;
-  photos: PhotoBase[];
+  photos: AlbumPhoto[];
   selectedPhotoIds?: number[];
   onToggle?: (id: number) => void;
   isSelectMode?: boolean;
@@ -24,9 +24,9 @@ const PhotoList = ({
   onDeleteSuccess,
 }: PhotoListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState<PhotoBase | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<AlbumPhoto | null>(null);
 
-  const handlePhotoClick = async (photo: PhotoBase) => {
+  const handlePhotoClick = async (photo: AlbumPhoto) => {
     setSelectedPhoto(photo);
     setIsModalOpen(true);
 
@@ -37,6 +37,7 @@ const PhotoList = ({
         ...photo,
         thumbnailUrl: detailData.originalUrl,
         uploaderName: detailData.uploader.name,
+        reactions: detailData.reactions || photo.reactions,
       });
     } catch (error) {
       console.error('상세 정보를 불러오지 못했습니다.', error);
@@ -74,6 +75,11 @@ const PhotoList = ({
         onDeleteSuccess={() => {
           if (selectedPhoto && onDeleteSuccess) {
             onDeleteSuccess(selectedPhoto.photoId);
+          }
+        }}
+        onReactionUpdate={() => {
+          if (selectedPhoto) {
+            handlePhotoClick(selectedPhoto);
           }
         }}
       />

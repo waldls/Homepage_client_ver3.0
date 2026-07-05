@@ -23,5 +23,13 @@ export const formatDateTimeMinute = (isoString: string): string => {
   return dayjs
     .utc(isoString)
     .tz('Asia/Seoul')
-    .format('YYYY년 M월 D일 H시 mm분');
+    .format('YYYY년 M월 D일 HH시 mm분');
+};
+
+export const formatLocalDateTimeMinute = (dateString: string): string => {
+  if (!dateString) return '';
+
+  const safeString = dateString.replace(' ', 'T');
+
+  return dayjs.tz(safeString, 'Asia/Seoul').format('YYYY년 M월 D일 HH시 mm분');
 };
