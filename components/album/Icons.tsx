@@ -28,7 +28,7 @@ const ICONS_MAP: Record<IconType, IconData> = {
   },
   download: {
     default: '/image/album/icons/download.svg',
-    size: { dt: 36, pad: 36, mb: 30 },
+    size: { dt: 36, pad: 25, mb: 22 },
   },
   close: {
     default: '/image/album/icons/close_default.svg',

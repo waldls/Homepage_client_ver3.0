@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 import instagram_icon from '@/public/image/instagram-icon.svg';
-import logo from '@/public/image/KAHLUA.svg';
+import logo from '@/public/image/KAHLUA_BLUE_footer.svg';
 import kakaotalk_icon from '@/public/image/kakaotalk-icon.svg';
 import youtube_icon from '@/public/image/youtube-icon.svg';
 

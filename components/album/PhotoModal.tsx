@@ -157,7 +157,7 @@ const PhotoModal = ({
           <span>완료 후에는 이전 상태로 되돌릴 수 없습니다.</span>
           <Button
             label="취소"
-            variant="secondary"
+            variant="cancel"
             onClick={() => setIsDeleteModalOpen(false)}
           />
           <Button label="삭제" variant="delete" onClick={handleConfirmDelete} />

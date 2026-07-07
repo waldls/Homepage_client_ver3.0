@@ -31,7 +31,7 @@ const ReactionSelector: React.FC<ReactionSelectorProps> = ({
         onMouseLeave={() => setIsHovered(false)}
         className="focus:outline-none transition-transform active:scale-90 cursor-pointer flex items-center justify-center"
       >
-        <Image src={getHeartImage()} alt="heart icon" width={48} height={48} />
+        <Image src={getHeartImage()} alt="heart icon" width={40} height={40} />
       </button>
 
       {isOpen && (

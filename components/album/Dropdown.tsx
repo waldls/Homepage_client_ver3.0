@@ -43,7 +43,7 @@ const Dropdown = ({
     <div ref={wrapRef} className="relative w-[130px]">
       <div
         className={clsx(
-          'w-[130px] border-[1.5px] border-blue-main bg-gray-0 overflow-hidden',
+          'w-[100px] ph:w-[130px] border-[1.5px] border-blue-main bg-gray-0 overflow-hidden',
           open ? 'rounded-t-lg border-b-0' : 'rounded-lg'
         )}
       >
@@ -72,7 +72,7 @@ const Dropdown = ({
       {open && (
         <ul
           className={clsx(
-            'absolute left-0 top-full z-50 w-[130px]',
+            'absolute left-0 top-full z-50 w-[100px] ph:w-[130px]',
             '-mt-[1.5px]',
             'flex flex-col',
             'border-[1.5px] border-blue-main border-t-0',

@@ -79,30 +79,33 @@ const ModalBase = ({
     >
       <div
         className={clsx(
-          'w-[clamp(328px,calc(220px+30vw),470px)] max-w-[calc(100vw-32px)] rounded-[30px] bg-gray-0 px-[32px] py-[12px] text-center',
-          'pad:w-[470px] pad:max-w-none',
+          'w-[clamp(240px,calc(220px+30vw),328px)] max-w-[calc(100vw-32px)] rounded-[30px] bg-gray-0 px-[32px] py-[24px] text-center',
+          'ph:h-[200px]',
+          'pad:w-[470px] pad:h-[284px] pad:max-w-none',
           'pad:px-[60px] pad:py-[28px]',
-          'dt:h-[350px] dt:w-[560px] dt:px-[68px] dt:py-[42px]',
+          'dt:w-[520px] dt:h-[320px] dt:px-[68px] dt:py-[42px]',
           className
         )}
       >
-        <div className="flex h-full flex-col items-center justify-center">
-          {mainText &&
-            renderStyledChild(
-              mainText,
-              'mx-auto max-w-[8.5em] text-balance font-pretendard text-[24px] font-semibold text-black pad:max-w-[10em] pad:text-[32px] dt:max-w-[11em] dt:text-[32px]',
-              'h2'
-            )}
-          {subText &&
-            renderStyledChild(
-              subText,
-              'mx-auto mt-1 max-w-[15em] text-balance font-pretendard text-[16px] font-medium leading-[150%] text-black pad:max-w-[16em] pad:text-[20px] dt:max-w-[17em] dt:text-[24px]',
-              'p'
-            )}
+        <div className="flex h-full flex-col justify-between">
+          <div className="flex h-full flex-col">
+            {mainText &&
+              renderStyledChild(
+                mainText,
+                'mx-auto max-w-[8.5em] text-balance font-pretendard text-[16px] font-semibold text-black mt-4 pad:max-w-[10em] pad:text-[22px] dt:max-w-[11em] dt:text-[24px] pad:mt-8',
+                'h2'
+              )}
+            {subText &&
+              renderStyledChild(
+                subText,
+                'mx-auto mt-1 max-w-[15em] text-balance font-pretendard text-[14px] font-medium leading-[150%] text-black pad:max-w-[16em] pad:text-[18px] dt:max-w-[16em] dt:text-[20px]',
+                'p'
+              )}
+          </div>
           {actions.length > 0 && (
             <div
               className={clsx(
-                'mt-6 flex w-full items-center justify-center gap-[clamp(16px,3vw,24px)]',
+                'mt-6 flex w-full items-center justify-center gap-[clamp(16px,3vw,24px)] ',
                 'pad:mt-8 pad:gap-[clamp(24px,calc(2.4vw-4px),32px)]',
                 'dt:mt-10 dt:gap-[clamp(32px,calc(3.4px+1.9vw),40px)]',
                 'min-[1920px]:gap-10'

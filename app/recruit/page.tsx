@@ -18,7 +18,7 @@ import {
 import RequirementCard from '@/components/recruit/RequirementCard';
 import ScheduleCard from '@/components/recruit/ScheduleCard';
 import SessionCard from '@/components/recruit/SessionCard';
-import logo_white from '@/public/image/KAHLUA.svg';
+import logo_white from '@/public/image/KAHLUA_BLUE_black.svg';
 import drum from '@/public/image/recruit/drum.svg';
 import guitar from '@/public/image/recruit/guitar.svg';
 import syn from '@/public/image/recruit/syn.svg';

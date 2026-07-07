@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import logo_white from '@/public/image/KAHLUA.svg';
+import logo_white from '@/public/image/KAHLUA_BLUE_black.svg';
 
 const Title = () => {
   return (
@@ -12,7 +12,7 @@ const Title = () => {
         <div className="flex relative pad:w-[376px] pad:h-[64px] w-[235px] h-[40px]">
           <Image src={logo_white} fill alt="logo" />
         </div>
-        <p className="dt:text-[32px] font-semibold text-gray-10 pad:text-[24px] text-[20px] leading-normal dt:mt-6 mt-8">
+        <p className="dt:text-[32px] font-semibold text-gray-10 pad:text-[24px] text-[20px] leading-normal mt-3">
           CONTRIBUTORS
         </p>
       </div>

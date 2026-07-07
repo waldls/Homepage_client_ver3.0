@@ -320,10 +320,10 @@ const AlbumListPage = () => {
               </div>
               <div className="flex flex-row items-center gap-3">
                 {isSelectMode && (
-                  <>
+                  <div className="flex flex-col dt:flex-row gap-2">
                     <Icon type="delete" onClick={handleDeleteClick} />
                     <Icon type="download" onClick={handleSave} />
-                  </>
+                  </div>
                 )}
                 <Button
                   label={isSelectMode ? '전체 선택' : '선택하기'}
@@ -365,7 +365,11 @@ const AlbumListPage = () => {
         closeOnOverlayClick={!isDeleting}
       >
         <p>사진을 삭제합니다.</p>
-        <p>선택한 {selectedPhotoIds.length}장이 삭제됩니다.</p>
+        <p>
+          선택한 {selectedPhotoIds.length}장이 삭제됩니다.
+          <br />
+          완료 후에는 이전 상태로 되돌릴 수 없습니다.
+        </p>
         <Button
           label="취소"
           variant="cancel"

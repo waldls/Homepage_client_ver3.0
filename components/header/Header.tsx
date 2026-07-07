@@ -14,10 +14,10 @@ import KahluaDropdown from './KahluaDropdown';
 import MobileDrawer from './MobileDrawer';
 
 import { authInstance } from '@/api/auth/axios';
-import { isLoggedInState } from '@/atoms/authAtom';
+import { isLoggedInState, isAdminState } from '@/atoms/authAtom';
 import { useAuthCheck } from '@/hooks/useAuthCheck';
-import logo_black from '@/public/image/KAHLUA-black.svg';
-import logo_white from '@/public/image/KAHLUA.svg';
+import logo_black from '@/public/image/KAHLUA_BLUE.svg';
+import logo_white from '@/public/image/KAHLUA_BLUE_black.svg';
 import table_menu_white from '@/public/image/tabler_menu-2-white.svg';
 import table_menu from '@/public/image/tabler_menu-2.svg';
 
@@ -47,6 +47,7 @@ const Header = () => {
   const pathname = usePathname();
 
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState); // Recoil 상태 업데이트 함수
+  const [isAdmin] = useRecoilState(isAdminState);
 
   const [width, setWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 0
@@ -159,7 +160,7 @@ const Header = () => {
               />
             )}
           </div>
-          <div>
+          <div className="flex">
             <Link
               href="/"
               key="home"
@@ -183,6 +184,11 @@ const Header = () => {
                 />
               )}
             </Link>
+            {isAdmin && pathname.startsWith('/admin') && (
+              <span className="font-pretendard text-gray-3 -ml-3 -mb-1 mt-1">
+                Admin
+              </span>
+            )}
           </div>
 
           {/* KAHLUA와 추가 요소를 감싸는 공통 div */}

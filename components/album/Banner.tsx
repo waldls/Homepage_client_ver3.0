@@ -38,7 +38,7 @@ const Banner = () => {
               <br className="ph:hidden" />
               가능합니다.
             </p>
-            <h1 className="font-pretendard pad:text-[64px] ph:text-[48px] font-black leading-tight text-gray-90">
+            <h1 className="font-pretendard pad:text-[64px] ph:text-[48px] text-[32px] font-black leading-tight text-gray-90">
               깔루아 <br className="ph:hidden" /> 공유 앨범
             </h1>
           </div>
@@ -52,7 +52,7 @@ const Banner = () => {
             />
           </div>
         </section>
-        <hr className="border-gray-2 border-2 my-14" />
+        <hr className="border-gray-1 border-[1.5px] my-14" />
       </div>
     </div>
   );

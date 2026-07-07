@@ -12,7 +12,8 @@ import { useRouter } from 'next/navigation';
 import { KahluaUrl } from './HeaderUrls';
 
 import instagram_logo from '@/public/image/instagram-icon.svg';
-import kahlua_logo from '@/public/image/KAHLUA-black.svg';
+import kahlua_logo from '@/public/image/KAHLUA_BLUE.svg';
+import kahlua_logo_black from '@/public/image/KAHLUA_BLUE_dropdown.svg';
 import kakaotalk_logo from '@/public/image/kakaotalk-icon.svg';
 import youtube_logo from '@/public/image/youtube-icon.svg';
 
@@ -142,7 +143,7 @@ const MobileDrawer = ({
         </div>
 
         <Image
-          src={kahlua_logo}
+          src={kahlua_logo_black}
           alt="kahlua_logo"
           height={width <= 834 ? 24 : 32}
           className="pb-6"
