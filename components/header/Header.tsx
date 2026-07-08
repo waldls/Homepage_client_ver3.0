@@ -185,7 +185,7 @@ const Header = () => {
               )}
             </Link>
             {isAdmin && pathname.startsWith('/admin') && (
-              <span className="font-pretendard text-gray-3 -ml-3 -mb-1 mt-1">
+              <span className="font-pretendard text-gray-3 text-[12px] -ml-8 pad:text-[18px] pad:-ml-3">
                 Admin
               </span>
             )}

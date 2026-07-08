@@ -29,13 +29,19 @@ const ReactionSelector: React.FC<ReactionSelectorProps> = ({
         onClick={() => setIsOpen(!isOpen)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="focus:outline-none transition-transform active:scale-90 cursor-pointer flex items-center justify-center"
+        className="w-8 h-8 dt:w-[44px] dt:h-[44px] pad:w-[42px] pad:h-[42px] focus:outline-none transition-transform active:scale-90 cursor-pointer flex items-center justify-center "
       >
-        <Image src={getHeartImage()} alt="heart icon" width={40} height={40} />
+        <Image
+          src={getHeartImage()}
+          alt="heart icon"
+          width={40}
+          height={40}
+          style={{ width: '100%', height: 'auto' }}
+        />
       </button>
 
       {isOpen && (
-        <div className="absolute z-20 w-60 h-12 dt:w-72 dt:h-14 dt:-top-16 -top-14 right-0 justify-between px-5 flex items-center bg-gray-0 rounded-full shadow-lg animate-bounce-in">
+        <div className="absolute z-20  w-60 h-12 dt:w-72 dt:h-14 dt:-top-16 -top-14 right-0 justify-between px-5 flex items-center bg-gray-0 rounded-full shadow-lg animate-bounce-in">
           {REACTION_LIST.map((icon) => (
             <button
               key={icon.id}

@@ -87,6 +87,16 @@ const PhotoModal = ({
     }
   };
 
+  const formattedDateTime = photo?.createdAt
+    ? formatLocalDateTimeMinute(photo.createdAt)
+    : '';
+  const [datePart, timePart] = formattedDateTime.includes('일 ')
+    ? [
+        formattedDateTime.split('일 ')[0] + '일',
+        formattedDateTime.split('일 ')[1],
+      ]
+    : [formattedDateTime, ''];
+
   return (
     <>
       <div
@@ -96,7 +106,7 @@ const PhotoModal = ({
         }}
       >
         <div className="relative flex dt:w-[754px] dt:h-[895px] pad:h-[750px] pad:w-[500px] h-[542px] w-[328px] flex-col overflow-hidden rounded-[32px] bg-gray-0 shadow-2xl">
-          <div className="relative flex h-[678px] w-full items-center justify-center bg-white sm:h-[500px] bg-gray-1">
+          <div className="relative flex dt:h-[678px] pad:h-[576px] mb:h-[408px] h-[380px] w-full items-center justify-center bg-white sm:h-[500px] bg-gray-1">
             <div className="absolute right-5 top-5 z-10 cursor-pointer">
               <Icons type="close" onClick={onClose} />
             </div>
@@ -115,16 +125,16 @@ const PhotoModal = ({
             />
           </div>
 
-          <div className="flex flex-1 flex-col justify-between p-6 sm:p-8">
+          <div className="flex flex-1 flex-col justify-between pad:p-6 ph:p-2">
             <div className=" flex items-start justify-between">
               <div className="flex flex-col gap-1">
-                <span className="text-[18px] font-bold text-black">
+                <span className="pad:text-[20px] text-[16px] font-bold text-black">
                   {photo.uploaderName}
                 </span>
-                <span className="text-[14px] font-medium text-gray-400">
-                  {photo.createdAt &&
-                    formatLocalDateTimeMinute(photo.createdAt)}
-                </span>
+                <div className="pad:text-[14px] text-[12px] font-medium text-gray-40 flex flex-col">
+                  <span>{datePart}</span>
+                  {timePart && <span>{timePart}</span>}
+                </div>{' '}
               </div>
               <div className="relative z-10">
                 <ReactionWidget

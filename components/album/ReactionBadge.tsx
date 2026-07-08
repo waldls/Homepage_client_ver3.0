@@ -18,7 +18,7 @@ const ReactionBadge: React.FC<ReactionBadgeProps> = ({
 
   return (
     <div
-      className={`flex items-center gap-2 z-0 rounded-full dt:w-20 w-16 h-fit transition-all justify-between p-2 pr-3 hover:bg-yellow-dark cursor-pointer 
+      className={`flex items-center gap-2 z-0 rounded-full dt:w-[72px] pad:w-16 w-12 h-fit transition-all justify-between pad:p-2 p-1 pr-3 dt:pr-3 hover:bg-yellow-dark cursor-pointer 
         ${
           reactions.clicked
             ? 'shadow-[inset_0_0_0_2px_#FFB800] bg-yellow-dark'
@@ -26,7 +26,7 @@ const ReactionBadge: React.FC<ReactionBadgeProps> = ({
         }`}
       onClick={onClick}
     >
-      <div className="flex items-center justify-center dt:w-8 dt:h-8 w-6 h-6 bg-gray-0 rounded-full flex-shrink-0 p-1">
+      <div className="flex items-center justify-center dt:w-7 dt:h-7 w-6 h-6 bg-gray-0 rounded-full flex-shrink-0 :p-1 p-0.5">
         {iconInfo && (
           <Image
             src={iconInfo.src}
