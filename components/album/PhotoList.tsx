@@ -51,7 +51,7 @@ const PhotoList = ({
 
   return (
     <>
-      <div className="grid w-full grid-cols-1 gap-5 p-5 mb:grid-cols-2 pad:grid-cols-3 dt:grid-cols-4">
+      <div className="grid w-full mb:gap-5 gap-2 p-5 grid-cols-3 dt:grid-cols-4">
         {photos.map((photo) => (
           <PhotoCard
             key={photo.photoId}

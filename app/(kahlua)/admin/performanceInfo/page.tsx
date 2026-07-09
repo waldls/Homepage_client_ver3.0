@@ -72,44 +72,43 @@ const PerformancePage = () => {
     []
   );
 
- const onSaveEdit = useCallback(async () => {
-   try {
-     const performanceData = {
-       posterImageUrl: image.posterImageUrl,
-       youtubeUrl: data.youtubeUrl,
-       title: data.title,
-       content: data.content,
-       venue: data.venue,
-       address: data.address,
-       performanceStartTime: data.performanceStartTime,
-       performanceEndTime: data.performanceEndTime,
-       entranceTime: data.entranceTime,
-       bookingStartDate: data.bookingStartDate,
-       bookingEndDate: data.bookingEndDate,
-       freshmanPrice: String(freshmanTicketData.freshmanPrice),
-       freshmanMaxPurchase: Number(freshmanTicketData.freshmanMaxPurchase),
-       generalPrice: String(generalTicketData.generalPrice),
-       generalMaxPurchase: Number(generalTicketData.generalMaxPurchase),
-     };
+  const onSaveEdit = useCallback(async () => {
+    try {
+      const performanceData = {
+        posterImageUrl: image.posterImageUrl,
+        youtubeUrl: data.youtubeUrl,
+        title: data.title,
+        content: data.content,
+        venue: data.venue,
+        address: data.address,
+        performanceStartTime: data.performanceStartTime,
+        performanceEndTime: data.performanceEndTime,
+        entranceTime: data.entranceTime,
+        bookingStartDate: data.bookingStartDate,
+        bookingEndDate: data.bookingEndDate,
+        freshmanPrice: String(freshmanTicketData.freshmanPrice),
+        freshmanMaxPurchase: Number(freshmanTicketData.freshmanMaxPurchase),
+        generalPrice: String(generalTicketData.generalPrice),
+        generalMaxPurchase: Number(generalTicketData.generalMaxPurchase),
+      };
 
-     const res = await authInstance.post(
-       '/performances/create',
-       performanceData
-     );
+      const res = await authInstance.post(
+        '/performances/create',
+        performanceData
+      );
 
-     if (res.status === 200) {
-       alert('공연 정보가 성공적으로 생성되었습니다.');
-       setIsEditModalOpen(false);
-       router.push('/admin');
-     }
-   } catch (error: any) {
-     console.error('공연 정보 생성 실패:', error);
-     console.error('error.response?.status:', error?.response?.status);
-     console.error('error.response?.data:', error?.response?.data);
-     alert('공연 정보 생성에 실패했습니다.');
-   }
- }, [data, image, freshmanTicketData, generalTicketData, router]);
-
+      if (res.status === 200) {
+        alert('공연 정보가 성공적으로 생성되었습니다.');
+        setIsEditModalOpen(false);
+        router.push('/admin');
+      }
+    } catch (error: any) {
+      console.error('공연 정보 생성 실패:', error);
+      console.error('error.response?.status:', error?.response?.status);
+      console.error('error.response?.data:', error?.response?.data);
+      alert('공연 정보 생성에 실패했습니다.');
+    }
+  }, [data, image, freshmanTicketData, generalTicketData, router]);
 
   // 수정 취소
   const onCancelEdit = useCallback(() => {
@@ -122,7 +121,7 @@ const PerformancePage = () => {
   return (
     <div className="font-pretendard mx-auto w-full pad:w-[786px] dt:w-[1200px] h-auto flex flex-col gap-[40px]">
       {/* Banner */}
-      <Banner>공연 정보 생성</Banner>
+      <Banner title="공연 정보 생성" />
 
       {/* List */}
       <div className="flex flex-col pad:flex-row w-full max-pad:px-[16px] gap-[40px] justify-center items-center pad:items-start">

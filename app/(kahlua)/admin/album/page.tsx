@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { getAlbumPhotos } from '@/api/album/album';
 import { getUserInfo } from '@/api/user/user';
-import AlbumBanner from '@/components/album/AlbumBanner';
+import Banner from '@/components/ui/Banner';
 import AlbumFolder from '@/components/album/AlbumFolder';
 import { useRouter } from 'next/navigation';
 
@@ -29,8 +29,21 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="w-[360px] font-pretendard relative mx-auto h-auto flex flex-col justify-center mt-20 pad:w-[786px] dt:w-[1200px] gap-[64px]">
-      <AlbumBanner type="album" />
+    <div className="w-full font-pretendard relative mx-auto h-auto flex flex-col justify-center mt-20 pad:w-[786px] dt:w-[1200px] gap-[64px]">
+      <Banner
+        title="ALBUM"
+        description={
+          <>
+            <p>
+              깔루아의 추억을 모아둔 공유 앨범입니다.
+              <br />
+              깔루아 전체, 기수별로 관리하고 조회할 수 있습니다.
+              <br />
+              마음에 드는 사진에 반응을 하고 내 기기에 저장해보세요!
+            </p>
+          </>
+        }
+      />{' '}
       <div className="flex flex-col gap-[160px] items-center justify-center pad:gap-[76px] dt:flex-row dt:gap-[254px]">
         <div className="flex flex-col gap-8 items-center">
           <AlbumFolder

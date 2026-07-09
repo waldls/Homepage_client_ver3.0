@@ -274,7 +274,7 @@ const AlbumListPage = () => {
                   }
                 }}
               />
-              <div className="flex items-center gap-2">
+              <div className="flex items-center pad:gap-2 gap-5">
                 {isSelectMode && (
                   <>
                     <Icon type="delete" onClick={handleDeleteClick} />

@@ -23,7 +23,6 @@ import TicketInfoList from '@/components/ui/admin/TicketInfo';
 import Banner from '@/components/ui/Banner';
 import { toLocalInput, toUtcPayload } from '@/utils/timeZoneUtils';
 
-
 const EditPerformancePage = () => {
   const params = useParams();
   const router = useRouter();
@@ -162,7 +161,7 @@ const EditPerformancePage = () => {
 
   return (
     <div className="font-pretendard mx-auto w-full pad:w-[786px] dt:w-[1200px] h-auto flex flex-col gap-[40px]">
-      <Banner>공연 정보 수정</Banner>
+      <Banner title="공연 정보 수정" />
       <div className="flex flex-col pad:flex-row w-full max-pad:px-[16px] gap-[40px] justify-center items-center pad:items-start">
         <ImageBox
           data={image}

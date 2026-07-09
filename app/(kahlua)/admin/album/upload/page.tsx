@@ -7,12 +7,12 @@ import type { ChangeEvent, DragEvent } from 'react';
 
 import { getPresignedUrls, uploadPhotosToAlbum } from '@/api/album/album';
 import { getUserInfo } from '@/api/user/user';
-import AlbumBanner from '@/components/album/AlbumBanner';
 import Button from '@/components/album/Button';
 import Category from '@/components/album/Category';
 import Dropdown from '@/components/album/Dropdown';
 import Modal from '@/components/album/Modal';
 import PhotoCard from '@/components/album/PhotoCard';
+import Banner from '@/components/ui/Banner';
 import PhotoPlus from '@/public/image/album/icons/photo-plus.svg';
 import type { AlbumCategory, PhotoBase } from '@/types/album';
 
@@ -208,8 +208,21 @@ const Page = () => {
   };
 
   return (
-    <div className="w-[360px] font-pretendard relative mx-auto h-auto flex flex-col justify-center mt-20 pad:w-[786px] dt:w-[1200px] gap-[32px] mb:gap-[64px]">
-      <AlbumBanner type="upload" />
+    <div className="w-full font-pretendard relative mx-auto h-auto flex flex-col justify-center mt-20 pad:w-[786px] dt:w-[1200px] gap-[32px] mb:gap-[64px]">
+      <Banner
+        title="UPLOAD"
+        description={
+          <>
+            <p>
+              깔루아 멤버들과 함께한 순간을 공유해주세요.
+              <br />
+              사진은 최대 20장 올릴 수 있어요.
+              <br />
+              동영상 업로드는 불가능합니다.
+            </p>
+          </>
+        }
+      />
       <div className="flex flex-col gap-5">
         <div className="flex flex-row justify-between">
           <div className="pad:hidden">
@@ -281,7 +294,7 @@ const Page = () => {
                   </button>
                 )}
               </div>
-              <div className="grid w-full grid-cols-1 gap-5 p-5 mb:grid-cols-2 pad:grid-cols-3 dt:grid-cols-4">
+              <div className="grid w-full mb:gap-5 gap-1 p-5 grid-cols-3 dt:grid-cols-4">
                 {photos.map((photo) => (
                   <PhotoCard
                     key={photo.photoId}

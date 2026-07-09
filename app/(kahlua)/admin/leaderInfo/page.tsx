@@ -44,7 +44,7 @@ const RecruitingPage = () => {
   return (
     <div className="font-pretendard mx-auto w-full pad:w-[786px] dt:w-[1200px] h-auto flex flex-col gap-[40px]">
       {/* Banner */}
-      <Banner>기장 정보 관리</Banner>
+      <Banner title="기장 정보 관리" />
 
       {/* List */}
       <div className="flex flex-col w-full max-pad:px-[16px]">
