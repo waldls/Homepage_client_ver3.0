@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import type { ButtonHTMLAttributes } from 'react';
 
-type ButtonVariant =
+export type ButtonVariant =
   | 'default'
   | 'primary'
   | 'secondary'

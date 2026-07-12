@@ -19,8 +19,7 @@ import PhotoList from '@/components/album/PhotoList';
 import type { AlbumListCategory, AlbumPhoto } from '@/types/album';
 import { useUserStore } from '@/store/useUserStore';
 import { getUserInfo } from '@/api/user/user';
-
-const ALBUM_ID = 1;
+import { CategoryType } from '@/types/album';
 
 type CategoryValue = AlbumListCategory | '전체';
 
@@ -55,7 +54,12 @@ const dropdownOptions = [
 //   reactions: photo.reactions || [],
 // });
 
-const AlbumListPage = () => {
+const AlbumListPage = ({ params }: { params: { albumId: string } }) => {
+  const currentAlbumId = Number(params.albumId); // URL에서 빼온 ID
+
+  const isKahlua = currentAlbumId === 1;
+  const albumType = isKahlua ? 'KAHLUA' : 'CREW';
+
   type ViewMode = 'ALL' | 'MY_REACTION';
   const [viewMode, setViewMode] = useState<ViewMode>('ALL');
 
@@ -83,12 +87,12 @@ const AlbumListPage = () => {
       try {
         let result;
         if (mode === 'MY_REACTION') {
-          result = await getMyReactionPhotos(ALBUM_ID, {
+          result = await getMyReactionPhotos(currentAlbumId, {
             cursor: nextCursor ?? undefined,
             size: 20,
           });
         } else {
-          result = await getAlbumPhotos(ALBUM_ID, {
+          result = await getAlbumPhotos(currentAlbumId, {
             category: category === '전체' ? undefined : category,
             cursor: nextCursor ?? undefined,
             size: 20,
@@ -181,7 +185,7 @@ const AlbumListPage = () => {
     if (selectedPhotoIds.length === 1) {
       try {
         const { downloadUrl, fileName } = await getPhotoDownloadUrl(
-          ALBUM_ID,
+          currentAlbumId,
           selectedPhotoIds[0]
         );
         const a = document.createElement('a');
@@ -195,7 +199,7 @@ const AlbumListPage = () => {
     }
 
     try {
-      const blob = await batchDownloadPhotos(ALBUM_ID, selectedPhotoIds);
+      const blob = await batchDownloadPhotos(currentAlbumId, selectedPhotoIds);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -233,7 +237,7 @@ const AlbumListPage = () => {
 
     setIsDeleting(true);
     try {
-      await deleteAlbumPhotos(ALBUM_ID, validPhotoIdsToDelete);
+      await deleteAlbumPhotos(currentAlbumId, validPhotoIdsToDelete);
 
       setPhotos((prev) =>
         prev.filter((p) => !validPhotoIdsToDelete.includes(p.photoId))
@@ -252,7 +256,7 @@ const AlbumListPage = () => {
   return (
     <div className="flex" onClick={handleReset}>
       <div className="flex flex-col justify-center dt:w-[1200px] pad:w-[786px] ph:w-[500px] mx-auto">
-        <Banner />
+        <Banner type={albumType} term={params.albumId} />
         <div className="w-full ph:px-5 pad:px-0">
           <div className="flex flex-col gap-[18px]">
             {/* ph: 드롭다운 */}
@@ -310,7 +314,7 @@ const AlbumListPage = () => {
                 ))}
                 <Category
                   label="반응한 사진"
-                  type="kahlua"
+                  type={albumType.toLocaleLowerCase() as CategoryType}
                   selected={viewMode === 'MY_REACTION'}
                   onClick={() => {
                     setViewMode('MY_REACTION');
@@ -337,7 +341,7 @@ const AlbumListPage = () => {
 
             <div id="photo-list" onClick={(e) => e.stopPropagation()}>
               <PhotoList
-                albumId={ALBUM_ID}
+                albumId={currentAlbumId}
                 photos={photos}
                 selectedPhotoIds={selectedPhotoIds}
                 onToggle={handleToggle}

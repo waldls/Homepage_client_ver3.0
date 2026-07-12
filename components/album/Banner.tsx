@@ -3,8 +3,14 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/album/Button';
+import { ButtonVariant } from '@/components/album/Button';
 
-const Banner = () => {
+interface BannerProps {
+  type: 'KAHLUA' | 'CREW';
+  term?: string;
+}
+
+const Banner = ({ type, term }: BannerProps) => {
   const router = useRouter();
 
   return (
@@ -20,7 +26,7 @@ const Banner = () => {
           {/* 폴더 이미지 */}
           <div className="relative w-[189px] h-[155px] shrink-0">
             <Image
-              src="/image/album/KAHLUA_folder_open.svg"
+              src={`/image/album/${type}_folder_open.svg`}
               alt="깔루아 공유 앨범 폴더"
               fill
               priority
@@ -30,25 +36,48 @@ const Banner = () => {
           </div>
 
           {/* 텍스트 */}
-          <div className="flex flex-col gap-[18px] pad:col-start-1 pad:row-start-2">
-            <p className="font-pretendard pad:text-[20px] ph:text-base font-medium text-gray-90">
-              깔루아 공유 앨범입니다.
-              <br />
-              기수에 상관없이 <br className="ph:hidden" /> 조회, 저장, 업로드가{' '}
-              <br className="ph:hidden" />
-              가능합니다.
-            </p>
-            <h1 className="font-pretendard pad:text-[64px] ph:text-[48px] text-[32px] font-black leading-tight text-gray-90">
-              깔루아 <br className="ph:hidden" /> 공유 앨범
-            </h1>
-          </div>
+          {type === 'KAHLUA' ? (
+            <>
+              {' '}
+              <div className="flex flex-col gap-[18px] pad:col-start-1 pad:row-start-2">
+                <p className="font-pretendard pad:text-[20px] ph:text-base font-medium text-gray-90">
+                  깔루아 공유 앨범입니다.
+                  <br />
+                  기수에 상관없이 <br className="ph:hidden" /> 조회, 저장,
+                  업로드가 <br className="ph:hidden" />
+                  가능합니다.
+                </p>
+                <h1 className="font-pretendard pad:text-[64px] ph:text-[48px] text-[32px] font-black leading-tight text-gray-90">
+                  깔루아 <br className="ph:hidden" /> 공유 앨범
+                </h1>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-col gap-[18px] pad:col-start-1 pad:row-start-2">
+                <p className="font-pretendard pad:text-[20px] ph:text-base font-medium text-gray-90">
+                  깔루아 {term}기 공유 앨범입니다.
+                  <br />
+                  {term}기 멤버만 <br className="ph:hidden" /> 조회, 저장,
+                  업로드가 <br className="ph:hidden" />
+                  가능합니다.
+                </p>
+                <h1 className="font-pretendard pad:text-[64px] ph:text-[48px] text-[32px] font-black leading-tight text-gray-90">
+                  {term}기 <br className="ph:hidden" /> 공유 앨범
+                </h1>
+              </div>
+            </>
+          )}
 
           {/* 버튼 */}
           <div className="shrink-0 pad:col-start-2 pad:row-start-1 pad:row-span-2 pad:self-end">
             <Button
               label="사진 올리기"
-              variant="uploadkahlua"
-              onClick={() => router.push('/admin/album/upload')}
+              variant={`upload${type.toLocaleLowerCase()}` as ButtonVariant}
+              onClick={() => {
+                const targetAlbumId = type === 'KAHLUA' ? 1 : term;
+                router.push(`/admin/album/${targetAlbumId}/upload`);
+              }}
             />
           </div>
         </section>

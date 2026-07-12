@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import type { ChangeEvent, DragEvent } from 'react';
 
 import { getPresignedUrls, uploadPhotosToAlbum } from '@/api/album/album';
@@ -29,7 +29,7 @@ type UploadPhoto = PhotoBase & {
   file: File;
 };
 
-const Page = () => {
+const UploadPage = ({ params }: { params: { albumId: string } }) => {
   const [selected, setSelected] = useState<AlbumCategory>('PERFORMANCE');
   const [photos, setPhotos] = useState<UploadPhoto[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -39,8 +39,7 @@ const Page = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const createdUrlsRef = useRef<string[]>([]);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const albumId = Number(searchParams.get('albumId') ?? '1');
+  const currentAlbumId = Number(params.albumId);
 
   useEffect(() => {
     return () => {
@@ -167,7 +166,7 @@ const Page = () => {
         fileType: photo.file.type || 'application/octet-stream',
       }));
 
-      const urlList = await getPresignedUrls(albumId, fileRequests);
+      const urlList = await getPresignedUrls(currentAlbumId, fileRequests);
 
       await Promise.all(
         photos.map(async (photo, index) => {
@@ -193,7 +192,7 @@ const Page = () => {
         };
       });
 
-      await uploadPhotosToAlbum(albumId, photoPayload);
+      await uploadPhotosToAlbum(currentAlbumId, photoPayload);
 
       createdUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
       createdUrlsRef.current = [];
@@ -246,7 +245,7 @@ const Page = () => {
           <Button
             type="button"
             label={isUploading ? '업로드 중...' : '업로드 하기'}
-            variant="uploadkahlua"
+            variant="uploadcrew"
             onClick={handleUpload}
             disabled={photos.length === 0 || isUploading}
             className={
@@ -270,9 +269,7 @@ const Page = () => {
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           className={`flex w-full h-[824px] flex-col rounded-[24px] border-2 border-dashed transition-colors ${
-            isDragging
-              ? 'border-yellow-main bg-yellow-light/10'
-              : 'border-gray-2'
+            isDragging ? 'border-red-main bg-yellow-light/10' : 'border-gray-2'
           } ${photos.length > 0 ? 'justify-start overflow-y-auto' : 'items-center justify-center cursor-pointer'}`}
         >
           {photos.length > 0 ? (
@@ -288,7 +285,7 @@ const Page = () => {
                       event.stopPropagation();
                       openFilePicker();
                     }}
-                    className="text-sm font-semibold text-yellow-main"
+                    className="text-sm font-semibold text-red-main"
                   >
                     사진 추가
                   </button>
@@ -353,11 +350,5 @@ const Page = () => {
     </div>
   );
 };
-
-const UploadPage = () => (
-  <Suspense>
-    <Page />
-  </Suspense>
-);
 
 export default UploadPage;
