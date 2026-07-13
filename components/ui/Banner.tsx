@@ -29,7 +29,7 @@ const Banner = ({ title, highlight, description }: BannerProps) => {
             <p className="text-gray-0 font-semibold">{highlight}</p>
           )}
 
-          {description && <p className="text-gray-0">{description}</p>}
+          {description && <div className="text-gray-0">{description}</div>}
         </div>
       )}
     </section>
