@@ -11,6 +11,11 @@ import type {
   ReactionToggleResult,
 } from '@/types/album';
 
+export const getMyTermAlbumId = async (): Promise<number> => {
+  const res = await authInstance.get('/albums/my-term');
+  return res.data.result.albumId;
+};
+
 // Presigned URL 발급
 export const getPresignedUrls = async (
   albumId: number,

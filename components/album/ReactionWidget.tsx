@@ -96,6 +96,7 @@ const ReactionWidget = ({
       <ReactionSelector
         selectedId={selectedReaction?.emojiType || null}
         onSelect={(id) => handleToggle(id as EmojiType)}
+        albumId={albumId}
       />
     </div>
   );

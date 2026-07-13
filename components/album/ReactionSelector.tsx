@@ -8,16 +8,26 @@ import { REACTION_LIST } from '../data/Reactions';
 interface ReactionSelectorProps {
   selectedId: EmojiType | null; // string을 EmojiType으로 변경
   onSelect: (emojiType: EmojiType) => void | Promise<void>;
+  albumId: number;
 }
 
 const ReactionSelector: React.FC<ReactionSelectorProps> = ({
   selectedId,
   onSelect,
+  albumId,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
+  const isCrew = albumId !== 1;
+
   const getHeartImage = () => {
+    if (isCrew) {
+      if (isOpen) return '/image/album/reactions/icon_red_click.svg';
+      if (isHovered) return '/image/album/reactions/icon_red_hover.svg';
+      return '/image/album/reactions/icon_red_main.svg';
+    }
+
     if (isOpen) return '/image/album/reactions/icon_click.svg';
     if (isHovered) return '/image/album/reactions/icon_hover.svg';
     return '/image/album/reactions/icon_main.svg';
@@ -49,7 +59,11 @@ const ReactionSelector: React.FC<ReactionSelectorProps> = ({
                 onSelect(icon.id);
                 setIsOpen(false);
               }}
-              className={`transition-transform hover:scale-110 ${selectedId === icon.id ? 'border-b-2 border-yellow-main' : ''}`}
+              className={`transition-transform hover:scale-110 ${
+                selectedId === icon.id
+                  ? `border-b-2 ${isCrew ? 'border-red-main' : 'border-yellow-main'}`
+                  : ''
+              }`}
             >
               <Image src={icon.src} alt={icon.label} width={32} height={32} />
             </button>

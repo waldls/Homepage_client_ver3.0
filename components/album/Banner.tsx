@@ -7,10 +7,11 @@ import { ButtonVariant } from '@/components/album/Button';
 
 interface BannerProps {
   type: 'KAHLUA' | 'CREW';
-  term?: string;
+  term?: number;
+  albumId: number;
 }
 
-const Banner = ({ type, term }: BannerProps) => {
+const Banner = ({ type, term, albumId }: BannerProps) => {
   const router = useRouter();
 
   return (
@@ -75,8 +76,7 @@ const Banner = ({ type, term }: BannerProps) => {
               label="사진 올리기"
               variant={`upload${type.toLocaleLowerCase()}` as ButtonVariant}
               onClick={() => {
-                const targetAlbumId = type === 'KAHLUA' ? 1 : term;
-                router.push(`/admin/album/${targetAlbumId}/upload`);
+                router.push(`/admin/album/${albumId}/upload`);
               }}
             />
           </div>

@@ -31,31 +31,13 @@ const CATEGORIES: { label: string; value: CategoryValue }[] = [
   { label: '기타', value: 'ETC' },
 ];
 
-// const fixUrl = (url: string) => url.replace(/(amazonaws\.com)([^/])/, '$1/$2');
-
-// const CATEGORY_KO: Record<string, string> = {
-//   FOUNDATION_FESTIVAL: '창립제',
-//   YEAR_END_PARTY: '송년회',
-//   PERFORMANCE: '공연',
-//   ETC: '기타',
-// };
-
 const dropdownOptions = [
   ...CATEGORIES,
   { label: '반응한 사진', value: 'MY_REACTION' },
 ];
 
-// const toPhotoItem = (photo: AlbumPhoto) => ({
-//   id: photo.photoId,
-//   imgUrl: fixUrl(photo.thumbnailUrl),
-//   category: CATEGORY_KO[photo.category] ?? photo.category,
-//   writer: photo.uploaderName,
-//   date: photo.createdAt,
-//   reactions: photo.reactions || [],
-// });
-
 const AlbumListPage = ({ params }: { params: { albumId: string } }) => {
-  const currentAlbumId = Number(params.albumId); // URL에서 빼온 ID
+  const currentAlbumId = Number(params.albumId);
 
   const isKahlua = currentAlbumId === 1;
   const albumType = isKahlua ? 'KAHLUA' : 'CREW';
@@ -75,7 +57,9 @@ const AlbumListPage = ({ params }: { params: { albumId: string } }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const observerRef = useRef<HTMLDivElement>(null);
 
+  const userTerm = useUserStore((state) => state.userTerm);
   const setUserId = useUserStore((state) => state.setUserId);
+  const setUserTerm = useUserStore((state) => state.setUserTerm);
 
   const fetchPhotos = useCallback(
     async (
@@ -122,12 +106,6 @@ const AlbumListPage = ({ params }: { params: { albumId: string } }) => {
   useEffect(() => {
     setPhotos([]);
     setCursor(null);
-    fetchPhotos(selectedCategory, viewMode);
-  }, [selectedCategory, viewMode, fetchPhotos]);
-
-  useEffect(() => {
-    setPhotos([]);
-    setCursor(null);
     fetchPhotos(selectedCategory, viewMode, null);
   }, [selectedCategory, viewMode, fetchPhotos]);
 
@@ -150,15 +128,17 @@ const AlbumListPage = ({ params }: { params: { albumId: string } }) => {
       try {
         const userInfo = await getUserInfo();
         setUserId(userInfo.id);
+
+        setUserTerm(userInfo.term ?? null);
       } catch (error) {
         console.error('유저 정보 가져오기 실패:', error);
       }
     };
 
-    if (!useUserStore.getState().userId) {
+    if (!useUserStore.getState().userId || !useUserStore.getState().userTerm) {
       fetchUser();
     }
-  }, [setUserId]);
+  }, [setUserId, setUserTerm]);
 
   const handleToggle = (id: number) => {
     setSelectedPhotoIds((prev) =>
@@ -256,7 +236,11 @@ const AlbumListPage = ({ params }: { params: { albumId: string } }) => {
   return (
     <div className="flex" onClick={handleReset}>
       <div className="flex flex-col justify-center dt:w-[1200px] pad:w-[786px] ph:w-[500px] mx-auto">
-        <Banner type={albumType} term={params.albumId} />
+        <Banner
+          type={albumType}
+          term={!isKahlua && userTerm ? Number(userTerm) : undefined}
+          albumId={currentAlbumId}
+        />{' '}
         <div className="w-full ph:px-5 pad:px-0">
           <div className="flex flex-col gap-[18px]">
             {/* ph: 드롭다운 */}

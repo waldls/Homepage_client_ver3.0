@@ -14,6 +14,7 @@ import Modal from '@/components/album/Modal';
 import PhotoCard from '@/components/album/PhotoCard';
 import Banner from '@/components/ui/Banner';
 import PhotoPlus from '@/public/image/album/icons/photo-plus.svg';
+import { useUserStore } from '@/store/useUserStore';
 import type { AlbumCategory, PhotoBase } from '@/types/album';
 
 const CATEGORY_OPTIONS: { label: string; value: AlbumCategory }[] = [
@@ -30,16 +31,20 @@ type UploadPhoto = PhotoBase & {
 };
 
 const UploadPage = ({ params }: { params: { albumId: string } }) => {
+  const currentAlbumId = Number(params.albumId);
+  const router = useRouter();
+
   const [selected, setSelected] = useState<AlbumCategory>('PERFORMANCE');
   const [photos, setPhotos] = useState<UploadPhoto[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [userName, setUserName] = useState('');
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const createdUrlsRef = useRef<string[]>([]);
-  const router = useRouter();
-  const currentAlbumId = Number(params.albumId);
+  const setUserId = useUserStore((state) => state.setUserId);
+  const setUserTerm = useUserStore((state) => state.setUserTerm);
 
   useEffect(() => {
     return () => {
@@ -52,11 +57,14 @@ const UploadPage = ({ params }: { params: { albumId: string } }) => {
       try {
         const userInfo = await getUserInfo();
         setUserName(userInfo.name ?? '');
+
+        setUserId(userInfo.id);
+        setUserTerm(userInfo.term ?? null);
       } catch (error) {
         console.error('사용자 정보를 불러오지 못했습니다.', error);
       }
     })();
-  }, []);
+  }, [setUserId, setUserTerm]);
 
   useEffect(() => {
     if (!userName) return;
@@ -198,7 +206,8 @@ const UploadPage = ({ params }: { params: { albumId: string } }) => {
       createdUrlsRef.current = [];
       setPhotos([]);
       setIsUploadModalOpen(false);
-      router.push('/admin/album/list');
+
+      router.push(`/admin/album/${currentAlbumId}/list`);
     } catch (error) {
       console.error('앨범 업로드 실패:', error);
     } finally {

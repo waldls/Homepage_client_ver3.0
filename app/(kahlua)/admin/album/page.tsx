@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { getAlbumPhotos } from '@/api/album/album';
+import { getAlbumPhotos, getMyTermAlbumId } from '@/api/album/album';
 import { getUserInfo } from '@/api/user/user';
 import Banner from '@/components/ui/Banner';
 import AlbumFolder from '@/components/album/AlbumFolder';
@@ -11,29 +11,59 @@ import { useUserStore } from '@/store/useUserStore';
 
 const Page = () => {
   const router = useRouter();
-
   const { userTerm: crewAlbumId, setUserTerm } = useUserStore();
-  const [latestThumbnail, setLatestThumbnail] = useState<string | null>(null);
+
+  const [kahluaThumbnail, setKahluaThumbnail] = useState<string | null>(null);
+  const [crewThumbnail, setCrewThumbnail] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
       try {
         if (!crewAlbumId) {
-          const [userInfo, albumData] = await Promise.all([
-            getUserInfo(),
-            getAlbumPhotos(1, { size: 1 }),
-          ]);
+          const userInfo = await getUserInfo();
           setUserTerm(userInfo.term ?? null);
-          setLatestThumbnail(albumData.content[0]?.thumbnailUrl ?? null);
-        } else {
-          const albumData = await getAlbumPhotos(1, { size: 1 });
-          setLatestThumbnail(albumData.content[0]?.thumbnailUrl ?? null);
         }
+
+        const kahluaPromise = getAlbumPhotos(1, { size: 1 }).catch(() => null);
+
+        const crewPromise = (async () => {
+          try {
+            const realAlbumId = await getMyTermAlbumId();
+            const crewData = await getAlbumPhotos(realAlbumId, { size: 1 });
+            return crewData.content[0]?.thumbnailUrl ?? null;
+          } catch (error) {
+            console.error('기수별 앨범 썸네일 로드 실패:', error);
+            return null;
+          }
+        })();
+
+        const [kahluaData, crewThumbUrl] = await Promise.all([
+          kahluaPromise,
+          crewPromise,
+        ]);
+
+        setKahluaThumbnail(kahluaData?.content[0]?.thumbnailUrl ?? null);
+        setCrewThumbnail(crewThumbUrl);
       } catch (error) {
         console.error('데이터를 불러오지 못했습니다.', error);
       }
     })();
   }, [crewAlbumId, setUserTerm]);
+
+  const handleCrewAlbumClick = async () => {
+    if (!crewAlbumId) {
+      alert('기수 정보를 불러오는 중입니다. 잠시만 기다려주세요');
+      return;
+    }
+
+    try {
+      const realAlbumId = await getMyTermAlbumId();
+      router.push(`/admin/album/${realAlbumId}/list`);
+    } catch (error) {
+      console.error('기수 앨범 진입 실패:', error);
+      alert('앨범 정보를 불러오는데 실패했습니다.');
+    }
+  };
 
   return (
     <div className="w-full font-pretendard relative mx-auto h-auto flex flex-col justify-center mt-20 pad:w-[786px] dt:w-[1200px] gap-[64px]">
@@ -54,7 +84,7 @@ const Page = () => {
         <div className="flex flex-col gap-8 items-center">
           <AlbumFolder
             type="KAHLUA"
-            thumbnailUrl={latestThumbnail ?? '/image/album/thumbnail_ex.jpg'}
+            thumbnailUrl={kahluaThumbnail ?? '/image/album/thumbnail_ex.jpg'}
           />
           <p className="font-pretendard text-center text-black text-[24px] font-semibold">
             깔루아 공유 앨범
@@ -70,20 +100,15 @@ const Page = () => {
         <div className="flex flex-col gap-8 items-center">
           <AlbumFolder
             type="CREW"
-            thumbnailUrl="/image/album/thumbnail_ex.jpg"
+            // 💡 5. crewThumbnail 상태를 연결! (없으면 기본 이미지)
+            thumbnailUrl={crewThumbnail ?? '/image/album/thumbnail_ex.jpg'}
           />
           <p className="font-pretendard text-center text-black text-[24px] font-semibold">
             {crewAlbumId ? `${crewAlbumId}기 공유 앨범` : '기수별 공유 앨범'}
           </p>
           <button
             className="w-[172px] h-[43px] bg-red-main rounded-[43px] text-[24px] font-medium text-gray-0"
-            onClick={() => {
-              if (crewAlbumId) {
-                router.push(`/admin/album/${crewAlbumId}/list`);
-              } else {
-                alert('기수 정보를 불러오는 중입니다. 잠시만 기다려주세요!');
-              }
-            }}
+            onClick={handleCrewAlbumClick}
           >
             보러가기
           </button>
