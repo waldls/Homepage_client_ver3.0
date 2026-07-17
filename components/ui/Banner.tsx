@@ -11,7 +11,7 @@ const Banner = ({ title, highlight, description }: BannerProps) => {
 
   return (
     <section
-      className={`pad:h-[333px] ph:h-[258px] text-center bg-blue-grad pad:mt-20 mt-0 pad:rounded-3xl ph:rounded-none ${
+      className={`pad:h-[333px] ph:h-[258px] text-center bg-blue-grad mt-0 pad:rounded-3xl ph:rounded-none ${
         !hasContent ? 'flex justify-center items-center' : ''
       }`}
     >

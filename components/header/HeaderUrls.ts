@@ -8,6 +8,8 @@ export const Url = [
 export const KahluaUrl = [
   { name: 'RESERVATION', url: '/reservation' },
   { name: 'ANNOUNCEMENT', url: '/announcement' },
+  { name: 'ALBUM', url: '/album' },
+
   { name: 'MYPAGE', url: '/mypage' },
   { name: 'ADMIN', url: '/admin' },
 ];
