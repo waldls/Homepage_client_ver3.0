@@ -89,6 +89,7 @@ const ReactionWidget = ({
               key={reac.emojiType}
               reactions={reac}
               onClick={() => handleToggle(reac.emojiType)}
+              albumId={albumId}
             />
           ))}
       </div>

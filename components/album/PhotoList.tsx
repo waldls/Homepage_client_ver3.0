@@ -51,21 +51,30 @@ const PhotoList = ({
 
   return (
     <>
-      <div className="grid w-full mb:gap-5 gap-2 p-5 grid-cols-3 dt:grid-cols-4">
-        {photos.map((photo) => (
-          <PhotoCard
-            key={photo.photoId}
-            id={photo.photoId}
-            category={photo.category}
-            writer={photo.uploaderName}
-            imgUrl={photo.thumbnailUrl}
-            isSelected={selectedPhotoIds.includes(photo.photoId)}
-            isSelectMode={isSelectMode}
-            onSelect={() => onToggle(photo.photoId)}
-            onClick={() => handlePhotoClick(photo)}
-          />
-        ))}
-      </div>
+      {photos.length === 0 ? (
+        <div className="flex flex-col items-center justify-center w-full min-h-[300px] text-gray-500 gap-2">
+          <p className="pad:text-md text-sm">아직 등록된 사진이 없습니다.</p>
+          <p className="pad:text-md text-sm">
+            깔루아와 함께한 사진을 올리고 공유앨범을 시작해보세요!
+          </p>
+        </div>
+      ) : (
+        <div className="grid w-full mb:gap-5 gap-2 p-5 grid-cols-3 dt:grid-cols-4">
+          {photos.map((photo) => (
+            <PhotoCard
+              key={photo.photoId}
+              id={photo.photoId}
+              category={photo.category}
+              writer={photo.uploaderName}
+              imgUrl={photo.thumbnailUrl}
+              isSelected={selectedPhotoIds.includes(photo.photoId)}
+              isSelectMode={isSelectMode}
+              onSelect={() => onToggle(photo.photoId)}
+              onClick={() => handlePhotoClick(photo)}
+            />
+          ))}
+        </div>
+      )}
 
       <PhotoModal
         albumId={albumId}

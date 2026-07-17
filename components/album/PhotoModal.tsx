@@ -134,7 +134,7 @@ const PhotoModal = ({
                 <div className="pad:text-[14px] text-[12px] font-medium text-gray-40 flex flex-col">
                   <span>{datePart}</span>
                   {timePart && <span>{timePart}</span>}
-                </div>{' '}
+                </div>
               </div>
               <div className="relative z-10">
                 <ReactionWidget
