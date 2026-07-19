@@ -7,7 +7,7 @@ const LEFT_COLUMN_ITEMS = [
   { name: '공연 예매 현황', url: '/admin/ticketing' },
   { name: '공연 생성하기', url: '/admin/performanceInfo' },
   { name: '기장 정보 관리', url: '/admin/leaderInfo' },
-  { name: '공유앨범', url: '/admin/album' },
+  // { name: '공유앨범', url: '/admin/album' },
 ];
 
 const RIGHT_COLUMN_ITEMS = [

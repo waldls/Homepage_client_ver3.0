@@ -76,7 +76,7 @@ const Banner = ({ type, term, albumId }: BannerProps) => {
               label="사진 올리기"
               variant={`upload${type.toLocaleLowerCase()}` as ButtonVariant}
               onClick={() => {
-                router.push(`/admin/album/${albumId}/upload`);
+                router.push(`/album/${albumId}/upload`);
               }}
             />
           </div>

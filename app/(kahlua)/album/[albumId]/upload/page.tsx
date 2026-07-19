@@ -207,7 +207,7 @@ const UploadPage = ({ params }: { params: { albumId: string } }) => {
       setPhotos([]);
       setIsUploadModalOpen(false);
 
-      router.push(`/admin/album/${currentAlbumId}/list`);
+      router.push(`/album/${currentAlbumId}/list`);
     } catch (error) {
       console.error('앨범 업로드 실패:', error);
     } finally {
