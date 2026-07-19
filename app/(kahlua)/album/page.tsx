@@ -12,6 +12,7 @@ import { useUserStore } from '@/store/useUserStore';
 const Page = () => {
   const router = useRouter();
   const { userTerm: crewAlbumId, setUserTerm } = useUserStore();
+
   const [kahluaThumbnail, setKahluaThumbnail] = useState<string | null>(null);
   const [crewThumbnail, setCrewThumbnail] = useState<string | null>(null);
 
@@ -94,11 +95,7 @@ const Page = () => {
         </div>
 
         <div className="flex flex-col gap-8 items-center">
-          <AlbumFolder
-            type="CREW"
-            // 💡 5. crewThumbnail 상태를 연결! (없으면 기본 이미지)
-            thumbnailUrl={crewThumbnail ?? ''}
-          />
+          <AlbumFolder type="CREW" thumbnailUrl={crewThumbnail ?? ''} />
           <p className="font-pretendard text-center text-black text-[24px] font-semibold">
             {crewAlbumId ? `${crewAlbumId}기 공유 앨범` : '기수별 공유 앨범'}
           </p>
