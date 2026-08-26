@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useReducer, useState } from 'react';
 
 import { axiosInstance } from '@/api/auth/axios';
-import { information } from '@/components/data/Information';
+// import { information } from '@/components/data/Information';
 import FinalStep from '@/components/templates/ticket/FinalStep';
 import FreshmanInfo from '@/components/templates/ticket/FreshmanInfo';
 import MemberSelection from '@/components/templates/ticket/MemberSelection';
@@ -126,7 +126,7 @@ const FreshmanTicket = () => {
   return (
     <div className="h-[1850px] w-full pad:w-[786px] dt:w-[996px] flex flex-col relative mx-auto top-20">
       <div className="h-[200px] w-full pad:rounded-t-xl bg-gray-90 flex flex-col mx-auto">
-        <p className="mt-10 text-gray-0 text-center text-2xl pad:text-[32px]  font-semibold leading-[48px]">
+        {/* <p className="mt-10 text-gray-0 text-center text-2xl pad:text-[32px]  font-semibold leading-[48px]">
           신입생 티켓 예매
         </p>
         <p className="mt-4 text-gray-20 text-center text-base pad:text-lg  font-normal leading-[27px]">
@@ -134,7 +134,7 @@ const FreshmanTicket = () => {
         </p>
         <p className="mt-1 text-gray-20 text-center text-base pad:text-lg  font-normal leading-[27px]">
           {information.subDate}
-        </p>
+        </p> */}
       </div>
       <div className="h-[1395px] w-full pad:rounded-b-xl pad:border pad:border-gray-15 flex flex-col mx-auto gap-0">
         <div className="flex flex-col">

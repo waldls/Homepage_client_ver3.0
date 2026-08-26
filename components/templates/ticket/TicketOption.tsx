@@ -14,7 +14,7 @@ interface TicketOptionProps {
 
 const TicketOption = ({ data, isDays }: TicketOptionProps) => {
   const [active, setActive] = useState(isDays);
-  const [freshman, setFreshman] = useState(false);
+  // const [freshman, setFreshman] = useState(false);
   const [general, setGeneral] = useState(true);
 
   const formatDateTimeSplit = (
@@ -38,13 +38,13 @@ const TicketOption = ({ data, isDays }: TicketOptionProps) => {
     setActive(isDays);
   }, [isDays]);
 
-  const handleFreshmanClick = () => {
-    setFreshman(true);
-    setGeneral(false);
-  };
+  // const handleFreshmanClick = () => {
+  //   setFreshman(true);
+  //   setGeneral(false);
+  // };
 
   const handleGeneralClick = () => {
-    setFreshman(false);
+    // setFreshman(false);
     setGeneral(true);
   };
 
@@ -98,7 +98,7 @@ const TicketOption = ({ data, isDays }: TicketOptionProps) => {
             </div>
           </div>
           <div className="h-[280px] flex flex-col flex-shrink-0 rounded-br-xl border-gray-15 bg-gray-5 items-center">
-            <Ticket
+            {/* <Ticket
               className="focus:cursor-pointer"
               ticket="신입생"
               price="무료"
@@ -110,7 +110,7 @@ const TicketOption = ({ data, isDays }: TicketOptionProps) => {
                   : 'impossible'
               }
               onClick={handleFreshmanClick}
-            />
+            /> */}
             <Ticket
               className="focus:cursor-pointer"
               ticket="일반"
@@ -125,11 +125,7 @@ const TicketOption = ({ data, isDays }: TicketOptionProps) => {
       </div>
       {active ? (
         <Link
-          href={
-            freshman === true
-              ? '/ticket/freshman_ticket/'
-              : '/ticket/general_ticket/'
-          }
+          href="/ticket/general_ticket/"
           className={`mt-[24px] w-[280px] h-[60px] flex flex-shrink-0 text-center justify-center items-center ml-auto rounded-xl text-[18px] font-medium 
       ${isDays ? '' : 'cursor-default'}
       ${'text-gray-0 bg-primary-50'}

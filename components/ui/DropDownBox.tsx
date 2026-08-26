@@ -43,11 +43,11 @@ const DropDownBox = ({
     : [];
 
   const ticketOptions: Option[] = [
-    {
-      value: '신입생 티켓',
-      label: '신입생 티켓',
-      status: data?.isFreshmanFree ? 'ACTIVE' : 'INACTIVE',
-    },
+    // {
+    //   value: '신입생 티켓',
+    //   label: '신입생 티켓',
+    //   status: data?.isFreshmanFree ? 'ACTIVE' : 'INACTIVE',
+    // },
     { value: '일반 티켓', label: '일반 티켓', status: 'ACTIVE' },
   ];
 

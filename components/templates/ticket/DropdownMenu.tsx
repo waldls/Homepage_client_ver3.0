@@ -75,9 +75,10 @@ const DropdownMenu = ({ isDays, data }: TicketOptionProps) => {
       return;
     }
 
-    if (selectedTicket === '신입생 티켓') {
-      router.push('/ticket/freshman_ticket');
-    } else if (selectedTicket === '일반 티켓') {
+    // if (selectedTicket === '신입생 티켓') {
+    //   router.push('/ticket/freshman_ticket');
+    // } else
+    if (selectedTicket === '일반 티켓') {
       localStorage.setItem('member', member.toString());
       router.push('/ticket/general_ticket');
     }

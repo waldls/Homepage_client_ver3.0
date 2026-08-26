@@ -25,7 +25,6 @@ const MOBILE_ITEMS = [
   LEFT_COLUMN_ITEMS[1],
   LEFT_COLUMN_ITEMS[2],
   ...RIGHT_COLUMN_ITEMS.slice(2),
-  LEFT_COLUMN_ITEMS[3],
 ];
 
 const page = () => {

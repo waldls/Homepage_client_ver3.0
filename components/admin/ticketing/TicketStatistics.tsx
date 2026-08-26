@@ -27,7 +27,7 @@ const TicketStatistics = () => {
       });
       setTotalPrice(result.total_income);
 
-      const labels = ['일반 예매', '신입생 예매'];
+      const labels = ['일반 예매'];
       const counts = [result.graph.general_count, result.graph.freshman_count];
       const baseColors = ['#1A2F9E', '#BCC6FB'];
 

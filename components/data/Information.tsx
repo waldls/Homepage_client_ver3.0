@@ -14,7 +14,7 @@ interface TicketInfo {
 }
 
 interface Tickets {
-  freshman: TicketInfo;
+  // freshman: TicketInfo;
   general: TicketInfo;
 }
 
@@ -28,7 +28,7 @@ interface Information {
   subDate: string;
   eventDate: Date;
   lastReserveDate: Date;
-  isFreshmanFree: boolean;
+  // isFreshmanFree: boolean;
   isDays: boolean;
   tickets: Tickets;
   day: string;
@@ -76,9 +76,9 @@ const getInformation = (): Information => {
   const isDays = true;
 
   return {
-    title: '2026년 3월 정기 공연',
-    location: '옥타바리움 라이브홀',
-    locationDetails: '서울 마포구 와우산로18길 16',
+    title: '2026년 9월 정기 공연',
+    location: '플렉스라운지',
+    locationDetails: '서울 마포구 양화로 100-10 다내리빌딩 지하',
     dateForString: formatDateForString(eventDate),
     dateForMinute: formatDateForMinute(eventDate),
     dayForString: formatDayForString(lastReserveDate),
@@ -87,14 +87,14 @@ const getInformation = (): Information => {
     subDate: formatSubDate(eventDate),
     eventDate,
     lastReserveDate,
-    isFreshmanFree: false,
+    // isFreshmanFree: false,
     isDays,
     tickets: {
-      freshman: {
-        name: '신입생 티켓',
-        price: '무료',
-        maxQuantity: 1,
-      },
+      // freshman: {
+      //   name: '신입생 티켓',
+      //   price: '무료',
+      //   maxQuantity: 1,
+      // },
       general: {
         name: '일반 티켓',
         price: '5,000원',
