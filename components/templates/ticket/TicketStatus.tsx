@@ -48,10 +48,10 @@ const TicketStatus = ({
       />
       <div className="flex flex-col pad:ml-8 mt-2 w-full pad:w-[389px]">
         <p className="h-[36px] text-[22px] pad:text-[24px] font-semibold leading-6 text-gray-90 ">
-          2026년 3월 정기 공연
+          2026년 9월 정기 공연
         </p>
         <p className="h-[30px] text-[18px] pad:text-[20px] font-medium leading-5 text-gray-40">
-          2026.03.03 TUE 19:00
+          2026.09.01 TUE 18:00
         </p>
         <div className="w-full dt:w-[670px] h-[1px] bg-gray-10 flex flex-shrink-0 mt-6" />
         <div className="flex flex-col dt:flex-row text-[16px] pad:text-[18px] font-medium leading-7 mt-4 pad:mt-7">
