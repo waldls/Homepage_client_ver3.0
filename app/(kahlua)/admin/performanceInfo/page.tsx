@@ -23,6 +23,7 @@ import AdminButton from '@/components/ui/admin/Button';
 import ImageBox from '@/components/ui/admin/ImageBox';
 import TicketInfoList from '@/components/ui/admin/TicketInfo';
 import Banner from '@/components/ui/Banner';
+import { toUtcPayload } from '@/utils/timeZoneUtils';
 
 const PerformancePage = () => {
   const [data, setData] = useState<{ [key: string]: any }>(defaultData);
@@ -81,11 +82,11 @@ const PerformancePage = () => {
         content: data.content,
         venue: data.venue,
         address: data.address,
-        performanceStartTime: data.performanceStartTime,
-        performanceEndTime: data.performanceEndTime,
-        entranceTime: data.entranceTime,
-        bookingStartDate: data.bookingStartDate,
-        bookingEndDate: data.bookingEndDate,
+        performanceStartTime: toUtcPayload(data.performanceStartTime),
+        performanceEndTime: toUtcPayload(data.performanceEndTime),
+        entranceTime: toUtcPayload(data.entranceTime),
+        bookingStartDate: toUtcPayload(data.bookingStartDate),
+        bookingEndDate: toUtcPayload(data.bookingEndDate),
         freshmanPrice: String(freshmanTicketData.freshmanPrice),
         freshmanMaxPurchase: Number(freshmanTicketData.freshmanMaxPurchase),
         generalPrice: String(generalTicketData.generalPrice),
