@@ -18,7 +18,7 @@ const Complete = () => {
   const [phoneNum, setPhoneNum] = useState<string>('');
   const [reservation_id, setReservationId] = useState<string>('');
   const [student_id, setStudentId] = useState<string>('');
-  const [state, setState] = useState<any>(null);
+  const [state, setState] = useState<string | null>(null);
   const [type, setType] = useState<string>('GENERAL');
 
   useEffect(() => {
