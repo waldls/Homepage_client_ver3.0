@@ -5,7 +5,7 @@ interface TicketDetailsProps {
   ticketType: string;
   onClick: (event: MouseEvent) => void;
   member: number;
-  maxTicket: number;
+  maxTicket: number | undefined;
   setMember: Dispatch<SetStateAction<number>>;
 }
 
@@ -16,7 +16,7 @@ const TicketDetails = ({
   setMember,
   maxTicket,
 }: TicketDetailsProps) => {
-  const max = ticketType === '신입생 티켓' ? 1 : maxTicket;
+  const max = ticketType === '신입생 티켓' ? 1 : (maxTicket as number);
   const min = 1;
   const ticket = ticketType === '신입생 티켓' ? 'freshman' : 'general';
 

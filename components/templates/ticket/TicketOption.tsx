@@ -6,9 +6,10 @@ import { useEffect, useState } from 'react';
 
 import OptionBox from '@/components/ui/OptionBox';
 import Ticket from '@/components/ui/Ticket';
+import { PerformanceDetail } from '@/types/performace';
 
 interface TicketOptionProps {
-  data: any;
+  data: PerformanceDetail | null;
   isDays: boolean;
 }
 
