@@ -163,7 +163,10 @@ const GeneralInfo = ({
     member,
   ]);
 
-  function arraysEqual(arr1: any[], arr2: any[]) {
+  function arraysEqual(
+    arr1: { name: string; phone_num: string }[],
+    arr2: { name: string; phone_num: string }[]
+  ) {
     if (arr1.length !== arr2.length) return false;
     return arr1.every(
       (value, index) =>

@@ -30,7 +30,7 @@ const TicketOption = ({ data, isDays }: TicketOptionProps) => {
     };
   };
 
-  const formatPrice = (price: any): string => {
+  const formatPrice = (price: string | number): string => {
     const numericPrice = typeof price === 'number' ? price : Number(price);
     return `${numericPrice.toLocaleString('ko-KR')}원`;
   };
