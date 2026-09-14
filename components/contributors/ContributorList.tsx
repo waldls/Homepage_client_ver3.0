@@ -3,12 +3,16 @@ import DY from '@/public/image/contributors/DY.png';
 import GH from '@/public/image/contributors/GH.avif';
 import GR from '@/public/image/contributors/GR.avif';
 import GY from '@/public/image/contributors/GY.avif';
+import HJ from '@/public/image/contributors/HJ.jpeg';
 import JE from '@/public/image/contributors/JE.avif';
 import JY from '@/public/image/contributors/JY.avif';
 import SW from '@/public/image/contributors/SW.avif';
+import SW2 from '@/public/image/contributors/SW.png';
 import SY from '@/public/image/contributors/SY.avif';
 import YH from '@/public/image/contributors/YH.jpeg';
+import YM from '@/public/image/contributors/YM.jpg';
 import YS from '@/public/image/contributors/YS.png';
+import YS2 from '@/public/image/contributors/YS.jpg';
 
 export const ContributorList = [
   {
@@ -107,5 +111,41 @@ export const ContributorList = [
     school: '홍익대학교 컴퓨터공학과 22학번',
     githubUrl: 'https://github.com/dldusgh318',
     githubName: '@dldusgh318',
+  },
+  {
+    image: SW2,
+    name: '최승원',
+    role: '백엔드',
+    year: '21',
+    school: '홍익대학교 컴퓨터공학과 22학번',
+    githubUrl: 'https://github.com/Seungwon326',
+    githubName: '@Seungwon326',
+  },
+  {
+    image: HJ,
+    name: '이한재',
+    role: '백엔드',
+    year: '21',
+    school: '홍익대학교 컴퓨터공학과 22학번',
+    githubUrl: 'https://github.com/leehanjay',
+    githubName: '@leehanjay',
+  },
+  {
+    image: YS2,
+    name: '이윤서',
+    role: '디자인 · 프론트엔드',
+    year: '22',
+    school: '홍익대학교 컴퓨터공학과 23학번',
+    githubUrl: 'https://github.com/yiyoonseo',
+    githubName: '@yiyoonseo',
+  },
+  {
+    image: YM,
+    name: '박유민',
+    role: '프론트엔드',
+    year: '22',
+    school: '홍익대학교 컴퓨터공학과 23학번',
+    githubUrl: 'https://github.com/waldls',
+    githubName: '@waldls',
   },
 ];
