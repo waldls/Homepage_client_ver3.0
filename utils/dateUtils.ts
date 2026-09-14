@@ -33,3 +33,14 @@ export const formatLocalDateTimeMinute = (dateString: string): string => {
 
   return dayjs.tz(safeString, 'Asia/Seoul').format('YYYY년 M월 D일 HH시 mm분');
 };
+
+// xx월 xx일 x요일
+export const formatKoreanLongDate = (dateString: string): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+  };
+  const date = new Date(dateString);
+  return date ? date.toLocaleDateString('ko-KR', options) : '';
+};

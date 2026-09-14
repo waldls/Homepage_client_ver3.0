@@ -7,6 +7,7 @@ import ReservationNotice from './ReservationNotice';
 import ReservationSuccessModal from './ReservationSuccessModal';
 
 import { ReservationRequest } from '@/types/reservation';
+import { formatKoreanLongDate } from '@/utils/dateUtils';
 
 interface ReservationFormProps {
   reservation: ReservationRequest;
@@ -52,13 +53,7 @@ const ReservationForm = ({
 
   // xx월 xx일 x요일 00:00 ~ 00:00
   const formattedDateTime = () => {
-    const options: Intl.DateTimeFormatOptions = {
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long',
-    };
-    const date = new Date(reservation.reservationDate);
-    const dateString = date ? date.toLocaleDateString('ko-KR', options) : '';
+    const dateString = formatKoreanLongDate(reservation.reservationDate);
 
     return `${dateString} ${reservation.startTime} ~ ${reservation.endTime}`;
   };
