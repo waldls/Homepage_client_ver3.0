@@ -5,11 +5,12 @@ import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, ChartDataLabels);
 
-type PieChartData = {
+export type PieChartData = {
   labels: string[];
   datasets: Array<{
     data: number[];
     backgroundColor: string[];
+    borderWidth?: number;
   }>;
 };
 

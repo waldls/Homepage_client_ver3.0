@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import PieChart from './PieChart';
+import PieChart, { PieChartData } from './PieChart';
 
 import { authInstance } from '@/api/auth/axios';
 
 const ApplicantStatistics = () => {
-  const [chartData, setChartData] = useState<any>(null);
+  const [chartData, setChartData] = useState<PieChartData | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
 
   const fetchData = async () => {
