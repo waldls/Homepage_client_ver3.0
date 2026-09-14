@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import PieChart from '../applicant/PieChart';
+import PieChart, { PieChartData } from '../applicant/PieChart';
 
 import { authInstance } from '@/api/auth/axios';
 
 const TicketStatistics = () => {
-  const [chartData, setChartData] = useState<any>(null);
+  const [chartData, setChartData] = useState<PieChartData | null>(null);
   const [ticketStatus, setTicketStatus] = useState({
     total: 0,
     waiting: 0,
@@ -124,7 +124,7 @@ const TicketStatistics = () => {
             {ticketStatus.total}
           </span>
         </div>
-        {chartData.datasets[0].data.every((value: any) => value === 0) ? (
+        {chartData.datasets[0].data.every((value) => value === 0) ? (
           <div className="flex flex-col items-center justify-center h-[208px] text-gray-500">
             <p className="mb-2">예매 데이터가 없습니다.</p>
           </div>

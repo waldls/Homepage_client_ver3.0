@@ -6,9 +6,10 @@ import { useEffect, useState } from 'react';
 
 import OptionBox from '@/components/ui/OptionBox';
 import Ticket from '@/components/ui/Ticket';
+import { PerformanceDetail } from '@/types/performace';
 
 interface TicketOptionProps {
-  data: any;
+  data: PerformanceDetail | null;
   isDays: boolean;
 }
 
@@ -29,7 +30,7 @@ const TicketOption = ({ data, isDays }: TicketOptionProps) => {
     };
   };
 
-  const formatPrice = (price: any): string => {
+  const formatPrice = (price: string | number): string => {
     const numericPrice = typeof price === 'number' ? price : Number(price);
     return `${numericPrice.toLocaleString('ko-KR')}원`;
   };

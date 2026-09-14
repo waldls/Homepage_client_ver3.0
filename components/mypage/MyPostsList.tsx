@@ -7,6 +7,7 @@ import { fetchCommentCount, fetchMyPosts } from '@/api/kahlua/post';
 import chatIcon from '@/public/image/mypage/grayChat.svg';
 import likeIcon from '@/public/image/mypage/grayHeart.svg';
 import { MyPost } from '@/types/post';
+import { formatDate } from '@/utils/dateUtils';
 
 // 내가 쓴 글 리스트
 const MyPostsList = () => {
@@ -54,16 +55,6 @@ const MyPostsList = () => {
   // 게시글 클릭 핸들러
   const handlePostClick = (postId: number) => {
     router.push(`/announcement/post/${postId}`); // 상세 페이지로 이동
-  };
-
-  // 날짜 포맷 함수
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}.${month}.${day}`;
   };
 
   useEffect(() => {

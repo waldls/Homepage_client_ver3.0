@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import TicketDetails from './TicketDetails';
 
+import { PerformanceDetail } from '@/types/performace';
 import { formatDateTimeMinute } from '@/utils/dateUtils';
 
 interface Option {
@@ -17,7 +18,7 @@ interface DropDownBoxProps {
   onSelect: (value: string) => void;
   member: number;
   setMember: React.Dispatch<React.SetStateAction<number>>;
-  data: any; // API에서 받은 데이터
+  data: Partial<PerformanceDetail> & { isDays: boolean }; // API에서 받은 데이터
 }
 
 const DropDownBox = ({

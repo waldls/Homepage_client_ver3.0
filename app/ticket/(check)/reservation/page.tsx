@@ -21,7 +21,7 @@ const Reservation = () => {
   const [buyer, setBuyer] = useState<string>('');
   const [phone_num, setPhoneNum] = useState<string>('');
   const [student_id, setStudentId] = useState<string>('');
-  const [state, setState] = useState<any>(null);
+  const [state, setState] = useState<string | null>(null);
   const [type, setType] = useState<string>('GENERAL');
   const [inputValue, setInputValue] = useState('');
   const [showNotFoundModal, setShowNotFoundModal] = useState(false);

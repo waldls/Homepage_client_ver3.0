@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { authInstance } from '@/api/auth/axios';
 import { ReservationRequest, ReservationResponse } from '@/types/reservation';
+import { formatKoreanLongDate } from '@/utils/dateUtils';
 
 export const reservationStatuses = [
   { color: 'bg-gray-15', label: '예약 불가능' },
@@ -54,7 +55,7 @@ const TimeTable = ({
           console.error('에러 발생: ', response.data.message);
         }
       } catch (error) {
-        console.log('User 데이터 불러오기 실패: ', error);
+        console.error('User 데이터 불러오기 실패: ', error);
       }
     };
     fetchUser();
@@ -178,13 +179,7 @@ const TimeTable = ({
 
   // 날짜 형식과 선택된 시간 범위 문자열 결합
   const formattedReservation = () => {
-    const options: Intl.DateTimeFormatOptions = {
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long',
-    };
-    const date = new Date(reservation.reservationDate);
-    const dateString = date ? date.toLocaleDateString('ko-KR', options) : '';
+    const dateString = formatKoreanLongDate(reservation.reservationDate);
     const timeRange = formatSelectedRange();
 
     return reservation.reservationDate ? `${dateString} ${timeRange}` : '';

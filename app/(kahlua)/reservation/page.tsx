@@ -42,9 +42,6 @@ const ReservationPage = () => {
       connectHeaders: {
         Authorization: `Bearer ${accessToken}`,
       },
-      debug: (str) => {
-        console.log('stomp debug: ', str);
-      },
       reconnectDelay: 5000,
     });
 
@@ -84,7 +81,7 @@ const ReservationPage = () => {
     };
 
     client.onStompError = (frame) => {
-      console.log('STOMP 오류: ', frame);
+      console.error('STOMP 오류: ', frame);
       // 액세스 토큰 만료시 로그인 화면으로 이동 (todo: 토큰 재발급 필요)
       if (
         frame.headers.message ===
@@ -131,7 +128,7 @@ const ReservationPage = () => {
         setReservationsForDate(reservationData);
       }
     } catch (error) {
-      console.log('Error fetching reservations:', error);
+      console.error('Error fetching reservations:', error);
     }
   };
 

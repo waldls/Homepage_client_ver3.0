@@ -16,6 +16,13 @@ export interface PerformanceResponse {
   booking_end_date: string;
 }
 
+export interface PerformanceDetail extends PerformanceResponse {
+  dateForMinute: string;
+  dateOption: string;
+  freshmanPrice: string;
+  generalPrice: string;
+}
+
 export interface RecommendedPerformanceResponse {
   id: number;
   title: string;

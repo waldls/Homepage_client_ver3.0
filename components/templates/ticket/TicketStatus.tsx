@@ -5,7 +5,7 @@ interface TicketStatusProps {
   buyer: string;
   phone_num: string;
   student_id: string;
-  state: string;
+  state: string | null;
   type: string;
 }
 
@@ -24,7 +24,7 @@ const TicketStatus = ({
   state,
   type,
 }: TicketStatusProps) => {
-  const statusText = stateMap[state];
+  const statusText = stateMap[state ?? ''];
   const copyReservationId = () => {
     navigator.clipboard.writeText(reservation_id).then(() => {
       alert('예매번호가 복사되었습니다!');

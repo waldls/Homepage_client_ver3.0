@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import DropDownBox from '@/components/ui/DropDownBox';
+import { PerformanceDetail } from '@/types/performace';
 
 interface TicketOptionProps {
   isDays: boolean;
-  data: any;
+  data: PerformanceDetail | null;
 }
 
 const DropdownMenu = ({ isDays, data }: TicketOptionProps) => {
@@ -20,7 +21,7 @@ const DropdownMenu = ({ isDays, data }: TicketOptionProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [member, setMember] = useState<number>(1);
 
-  const processData = (rawData: any) => {
+  const processData = (rawData: PerformanceDetail | null) => {
     const bookingStart = dayjs(rawData?.booking_start_date);
     const bookingEnd = dayjs(rawData?.booking_end_date);
     const now = dayjs();

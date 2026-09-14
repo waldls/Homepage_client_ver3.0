@@ -12,6 +12,7 @@ import TicketOption from '@/components/templates/ticket/TicketOption';
 import RecommendedList from '@/components/ticket/RecommendedList';
 import Bar from '@/components/ui/Bar';
 import defaultPoster from '@/public/image/ticket/DefaultPoster.svg';
+import { PerformanceDetail } from '@/types/performace';
 import { formatDateTime } from '@/utils/dateUtils';
 
 const apikey = process.env.NEXT_PUBLIC_KAKAOMAP_KEY;
@@ -36,7 +37,9 @@ const Skeleton = ({
 
 const TicketDetail = ({ id: prodId }: TicketDetailProps) => {
   const [isDays, setIsDays] = useState(false);
-  const [ticketInfo, setTicketInfo] = useState<any>(null);
+  const [ticketInfo, setTicketInfo] = useState<PerformanceDetail | null>(
+    null
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [opacity, setOpacity] = useState(1);
   const [isClient, setIsClient] = useState(false);

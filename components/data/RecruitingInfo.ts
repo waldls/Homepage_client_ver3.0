@@ -46,13 +46,6 @@ export const formatFullDate = (date: Date): string =>
 export const formatMonthToDate = (date: Date): string =>
   `${formatMonth(date)}.${formatDay(date)} ${formatDayofWeek(date)}`;
 
-// 시간 추출 (ex. 16)
-export const formatHour = (date: Date): string => dayjs(date).tz().format('HH');
-
-// 분 추출 (ex. 59)
-export const formatMinute = (date: Date): string =>
-  dayjs(date).tz().format('mm');
-
 // 시간 전체 (ex. 16:59)
 export const formatTime = (date: Date): string =>
   dayjs(date).tz().format('HH:mm');
