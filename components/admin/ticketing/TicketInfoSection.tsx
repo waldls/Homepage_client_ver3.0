@@ -78,13 +78,13 @@ const TicketInfoSection = ({ type }: { type: string }) => {
       try {
         await authInstance.patch(`/admin/tickets/${ticketId}/ticket-complete`);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     } else if (status === '예매 취소') {
       try {
         await authInstance.patch(`/admin/tickets/${ticketId}/cancel-complete`);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   };

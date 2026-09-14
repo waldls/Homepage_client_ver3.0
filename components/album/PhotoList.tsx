@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PhotoCard from './PhotoCard';
 import PhotoModal from './PhotoModal';
 import { getDetailedPhotoInfo } from '@/api/album/album';
@@ -25,6 +25,10 @@ const PhotoList = ({
 }: PhotoListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<AlbumPhoto | null>(null);
+  const selectedPhotoIdSet = useMemo(
+    () => new Set(selectedPhotoIds),
+    [selectedPhotoIds]
+  );
 
   const handlePhotoClick = async (photo: AlbumPhoto) => {
     setSelectedPhoto(photo);
@@ -67,7 +71,7 @@ const PhotoList = ({
               category={photo.category}
               writer={photo.uploaderName}
               imgUrl={photo.thumbnailUrl}
-              isSelected={selectedPhotoIds.includes(photo.photoId)}
+              isSelected={selectedPhotoIdSet.has(photo.photoId)}
               isSelectMode={isSelectMode}
               onSelect={() => onToggle(photo.photoId)}
               onClick={() => handlePhotoClick(photo)}

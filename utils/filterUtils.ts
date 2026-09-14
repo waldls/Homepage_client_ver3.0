@@ -11,9 +11,7 @@ export const filterNameValue = (value: string): string => {
   return value.replace(/[^ㄱ-ㅎ가-힣a-zA-Z\s]/g, '');
 };
 
-export const filterDepartmentValue = (value: string): string => {
-  return value.replace(/[^ㄱ-ㅎ가-힣a-zA-Z\s]/g, '');
-};
+export const filterDepartmentValue = filterNameValue;
 
 export const filterStudentIdValue = (value: string): string => {
   return value.replace(/[^ㄱ-ㅎ가-힣a-zA-Z0-9\s]/g, '').slice(0, 7);

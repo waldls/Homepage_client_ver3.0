@@ -30,6 +30,13 @@ const CalendarUI = ({ onChange }: CalendarProps) => {
     return { minDate: today, maxDate: twoWeeksLater };
   }, []);
 
+  const formatYmd = (date: Date) => {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   const handleDateChange = async (newValue: Value) => {
     if (newValue instanceof Date) {
       const day = newValue.getDay();
@@ -41,22 +48,14 @@ const CalendarUI = ({ onChange }: CalendarProps) => {
       }
 
       setValue(newValue);
-      const yyyy = newValue.getFullYear();
-      const mm = String(newValue.getMonth() + 1).padStart(2, '0');
-      const dd = String(newValue.getDate()).padStart(2, '0');
-
-      onChange('reservationDate', `${yyyy}-${mm}-${dd}`);
+      onChange('reservationDate', formatYmd(newValue));
     }
   };
 
   const handleModalConfirm = () => {
     if (tempDate) {
       setValue(tempDate);
-      const yyyy = tempDate.getFullYear();
-      const mm = String(tempDate.getMonth() + 1).padStart(2, '0');
-      const dd = String(tempDate.getDate()).padStart(2, '0');
-
-      onChange('reservationDate', `${yyyy}-${mm}-${dd}`);
+      onChange('reservationDate', formatYmd(tempDate));
     }
 
     setIsModalOpen(false);
@@ -65,30 +64,7 @@ const CalendarUI = ({ onChange }: CalendarProps) => {
 
   // 요일 체크만 담당하는 함수
   const isSelectable = (date: Date) => {
-    // const today = new Date();
-
-    // // 날짜 비교를 위해 양쪽 모두 현지 시간대의 00:00:00으로 설정
-    // const compareDate = new Date(
-    //   date.getFullYear(),
-    //   date.getMonth(),
-    //   date.getDate()
-    // );
-    // const compareToday = new Date(
-    //   today.getFullYear(),
-    //   today.getMonth(),
-    //   today.getDate()
-    // );
-
     const day = date.getDay();
-
-    // const twoWeeksFromToday = new Date(compareToday);
-    // twoWeeksFromToday.setDate(compareToday.getDate() + 14);
-
-    // // 오늘 이전 날짜는 비활성화
-    // if (compareDate < compareToday) return false;
-
-    // // 오늘 기준 2주 이후 날짜는 비활성화
-    // if (compareDate > twoWeeksFromToday) return false;
 
     // 월, 목, 토, 일요일만 선택 가능 (2026년 2학기)
     return day === 1 || day === 4 || day === 6 || day === 0;

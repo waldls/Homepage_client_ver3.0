@@ -54,7 +54,7 @@ const TimeTable = ({
           console.error('에러 발생: ', response.data.message);
         }
       } catch (error) {
-        console.log('User 데이터 불러오기 실패: ', error);
+        console.error('User 데이터 불러오기 실패: ', error);
       }
     };
     fetchUser();
