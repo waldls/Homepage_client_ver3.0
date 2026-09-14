@@ -9,7 +9,7 @@ const MobileTicketList = ({
   currentId,
 }: {
   tickets: any[];
-  currentId: number;
+  currentId?: number;
 }) => {
   const [shuffledTickets, setShuffledTickets] = useState<any[] | null>(null);
 

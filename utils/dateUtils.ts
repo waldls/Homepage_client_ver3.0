@@ -13,7 +13,7 @@ export const formatDate = (dateString: string) => {
   return `${year}.${month}.${day}`;
 };
 
-export const formatDateTime = (isoString: string): string => {
+export const formatDateTime = (isoString?: string): string => {
   if (!isoString) return '';
   return dayjs.utc(isoString).tz('Asia/Seoul').format('YYYY년 M월 D일 H시');
 };

@@ -12,7 +12,7 @@ const RecommendedList = ({
   id,
   isLoading,
 }: {
-  id: number;
+  id?: number;
   isLoading: boolean;
 }) => {
   const [ticketList, setTicketList] = useState<

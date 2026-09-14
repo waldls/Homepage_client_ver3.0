@@ -14,7 +14,7 @@ const DesktopTicketList = ({
   isLoading,
 }: {
   tickets: any[];
-  currentId: number;
+  currentId?: number;
   isLoading: boolean;
 }) => {
   const [visibleCount, setVisibleCount] = useState<number | null>(null);
