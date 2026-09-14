@@ -191,8 +191,11 @@ const TableSection = forwardRef<TableSectionRef, TableSectionProps>(
       // 변경된 멤버들만 반환
       getChangedMembers: () => {
         const baseData = isSearching ? allMembers : members;
+        const originMemberById = new Map(
+          originMembers.map((o) => [o.id, o])
+        );
         return baseData.filter((member) => {
-          const original = originMembers.find((o) => o.id === member.id);
+          const original = originMemberById.get(member.id);
           return original && member.userType !== original.userType;
         });
       },

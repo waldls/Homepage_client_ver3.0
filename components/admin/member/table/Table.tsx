@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
@@ -36,12 +36,16 @@ const Table = ({
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   // 검색어 및 대기/완료 여부에 따라 필터링된 멤버 목록
-  const filteredMembers = members.filter((member) => {
-    if (searchQuery) {
-      return member.name.includes(searchQuery);
-    }
-    return isWaiting ? member.approvalStatus === 'PENDING' : true;
-  });
+  const filteredMembers = useMemo(
+    () =>
+      members.filter((member) => {
+        if (searchQuery) {
+          return member.name.includes(searchQuery);
+        }
+        return isWaiting ? member.approvalStatus === 'PENDING' : true;
+      }),
+    [members, searchQuery, isWaiting]
+  );
 
   // 드롭다운 토글 핸들러
   const toggleDropdown = (
