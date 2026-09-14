@@ -7,6 +7,25 @@ import ensemble2 from '@/public/image/about/ensemble2.avif';
 import ensemble3 from '@/public/image/about/ensemble3.avif';
 import music from '@/public/image/about/music.svg';
 
+const ensembleDescriptions = {
+  default: [
+    '깔루아 모집 후 직속 선배들의 악기 연주를',
+    '위한 속성 과외가 준비되어 있습니다.',
+    '그리고 새내기들끼리 대망의 첫 합주를',
+    '하게되는데요.',
+    '이 첫 합주를 기점으로 밴드의 매력에',
+    '푹 빠지게 될거예요!',
+  ],
+  phone: [
+    '깔루아 모집 후 직속 선배들의 악기',
+    '연주를 위한 속성 과외가 준비되어',
+    '있습니다. 그리고 새내기들끼리 대망의 첫',
+    '합주를 하게되는데요.',
+    '이 첫 합주를 기점으로 밴드의 매력에',
+    '푹 빠지게 될거예요!',
+  ],
+};
+
 const Ensemble = () => {
   const dtImages = [
     {
@@ -68,24 +87,7 @@ const Ensemble = () => {
           title2=""
           width="pad:w-80"
           height="pad:h-[162px]"
-          descriptions={{
-            default: [
-              '깔루아 모집 후 직속 선배들의 악기 연주를',
-              '위한 속성 과외가 준비되어 있습니다.',
-              '그리고 새내기들끼리 대망의 첫 합주를',
-              '하게되는데요.',
-              '이 첫 합주를 기점으로 밴드의 매력에',
-              '푹 빠지게 될거예요!',
-            ],
-            phone: [
-              '깔루아 모집 후 직속 선배들의 악기',
-              '연주를 위한 속성 과외가 준비되어',
-              '있습니다. 그리고 새내기들끼리 대망의 첫',
-              '합주를 하게되는데요.',
-              '이 첫 합주를 기점으로 밴드의 매력에',
-              '푹 빠지게 될거예요!',
-            ],
-          }}
+          descriptions={ensembleDescriptions}
           imageSrc={music}
           altText="ensemble"
         />
@@ -125,24 +127,7 @@ const Ensemble = () => {
             title2=""
             width="ph:w-64"
             height="ph:h-36"
-            descriptions={{
-              default: [
-                '깔루아 모집 후 직속 선배들의 악기 연주를',
-                '위한 속성 과외가 준비되어 있습니다.',
-                '그리고 새내기들끼리 대망의 첫 합주를',
-                '하게되는데요.',
-                '이 첫 합주를 기점으로 밴드의 매력에',
-                '푹 빠지게 될거예요!',
-              ],
-              phone: [
-                '깔루아 모집 후 직속 선배들의 악기',
-                '연주를 위한 속성 과외가 준비되어',
-                '있습니다. 그리고 새내기들끼리 대망의 첫',
-                '합주를 하게되는데요.',
-                '이 첫 합주를 기점으로 밴드의 매력에',
-                '푹 빠지게 될거예요!',
-              ],
-            }}
+            descriptions={ensembleDescriptions}
             imageSrc={music}
             altText="ensemble"
           />

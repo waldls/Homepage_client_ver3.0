@@ -7,6 +7,25 @@ import travel1 from '@/public/image/about/travel1.avif';
 import travel2 from '@/public/image/about/travel2.avif';
 import travel3 from '@/public/image/about/travel3.avif';
 
+const travelDescriptions = {
+  default: [
+    'MT, 바다 여행, 놀이공원 등의',
+    '친목을 다질 수 있는 활동과',
+    '산책, 보드게임 카페, 술자리, 맛집 탐방 등',
+    '일상을 함께하는 다양한 모임들이 있습니다.',
+    '이렇게 많은 시간을 함께 보내는 만큼 깔루아',
+    '는 가족보다 더 가족같은 사이랍니다.',
+  ],
+  phone: [
+    'MT, 바다 여행, 놀이공원 등의 친목을',
+    '다질 수 있는 활동과 산책, 보드게임 카페,',
+    '술자리, 맛집 탐방 등 일상을 함께하는',
+    '다양한 모임들이 있습니다. 이렇게 많은',
+    '시간을 함께 보내는 만큼 깔루아는',
+    '가족보다 더 가족같은 사이랍니다.',
+  ],
+};
+
 const Travel = () => {
   const dtImages = [
     {
@@ -73,24 +92,7 @@ const Travel = () => {
           title2=""
           width="pad:w-80"
           height="pad:h-[162px]"
-          descriptions={{
-            default: [
-              'MT, 바다 여행, 놀이공원 등의',
-              '친목을 다질 수 있는 활동과',
-              '산책, 보드게임 카페, 술자리, 맛집 탐방 등',
-              '일상을 함께하는 다양한 모임들이 있습니다.',
-              '이렇게 많은 시간을 함께 보내는 만큼 깔루아',
-              '는 가족보다 더 가족같은 사이랍니다.',
-            ],
-            phone: [
-              'MT, 바다 여행, 놀이공원 등의 친목을',
-              '다질 수 있는 활동과 산책, 보드게임 카페,',
-              '술자리, 맛집 탐방 등 일상을 함께하는',
-              '다양한 모임들이 있습니다. 이렇게 많은',
-              '시간을 함께 보내는 만큼 깔루아는',
-              '가족보다 더 가족같은 사이랍니다.',
-            ],
-          }}
+          descriptions={travelDescriptions}
           imageSrc={beer}
           altText="travel"
         />
@@ -125,24 +127,7 @@ const Travel = () => {
             title2=""
             width="ph:w-64"
             height="ph:h-36"
-            descriptions={{
-              default: [
-                'MT, 바다 여행, 놀이공원 등의',
-                '친목을 다질 수 있는 활동과',
-                '산책, 보드게임 카페, 술자리, 맛집 탐방 등',
-                '일상을 함께하는 다양한 모임들이 있습니다.',
-                '이렇게 많은 시간을 함께 보내는 만큼 깔루아',
-                '는 가족보다 더 가족같은 사이랍니다.',
-              ],
-              phone: [
-                'MT, 바다 여행, 놀이공원 등의 친목을',
-                '다질 수 있는 활동과 산책, 보드게임 카페,',
-                '술자리, 맛집 탐방 등 일상을 함께하는',
-                '다양한 모임들이 있습니다. 이렇게 많은',
-                '시간을 함께 보내는 만큼 깔루아는',
-                '가족보다 더 가족같은 사이랍니다.',
-              ],
-            }}
+            descriptions={travelDescriptions}
             imageSrc={beer}
             altText="travel"
           />

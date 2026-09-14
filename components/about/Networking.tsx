@@ -7,6 +7,28 @@ import networking1 from '@/public/image/about/networking1.avif';
 import networking2 from '@/public/image/about/networking2.avif';
 import networking3 from '@/public/image/about/networking3.avif';
 
+const networkingDescriptions = {
+  default: [
+    '7월에는 깔루아의 창립일을 기념하는 창립제,',
+    '12월에는 다함께 연말을 마무리하는 송년회가',
+    '열립니다.',
+    '1기부터 활동기수까지 선후배가 함께 모여',
+    '네트워킹을 할 수 있는 행사입니다.',
+    '이렇게 많은 선배들, 동기들, 후배들을 사귈 수',
+    '있는 것이 깔루아의 자랑 중 하나입니다.',
+  ],
+  phone: [
+    '7월에는 깔루아의 창립일을 기념하는',
+    '창립제, 12월에는 다함께 연말을 마무리',
+    '하는 송년회가 열립니다.',
+    '1기부터 활동기수까지 선후배가 함께',
+    '모여 네트워킹을 할 수 있는 행사입니다.',
+    '이렇게 많은 선배들, 동기들, 후배들을',
+    '사귈 수 있는 것이 깔루아의 자랑 중',
+    '하나입니다.',
+  ],
+};
+
 const Networking = () => {
   const dtImages = [
     {
@@ -68,27 +90,7 @@ const Networking = () => {
           title2="연말 송년회"
           width="pad:w-80"
           height="pad:h-[189px]"
-          descriptions={{
-            default: [
-              '7월에는 깔루아의 창립일을 기념하는 창립제,',
-              '12월에는 다함께 연말을 마무리하는 송년회가',
-              '열립니다.',
-              '1기부터 활동기수까지 선후배가 함께 모여',
-              '네트워킹을 할 수 있는 행사입니다.',
-              '이렇게 많은 선배들, 동기들, 후배들을 사귈 수',
-              '있는 것이 깔루아의 자랑 중 하나입니다.',
-            ],
-            phone: [
-              '7월에는 깔루아의 창립일을 기념하는',
-              '창립제, 12월에는 다함께 연말을 마무리',
-              '하는 송년회가 열립니다.',
-              '1기부터 활동기수까지 선후배가 함께',
-              '모여 네트워킹을 할 수 있는 행사입니다.',
-              '이렇게 많은 선배들, 동기들, 후배들을',
-              '사귈 수 있는 것이 깔루아의 자랑 중',
-              '하나입니다.',
-            ],
-          }}
+          descriptions={networkingDescriptions}
           imageSrc={celebrate}
           altText="networking"
         />
@@ -128,27 +130,7 @@ const Networking = () => {
             title2="연말 송년회"
             width="ph:w-64"
             height="ph:h-[192px]"
-            descriptions={{
-              default: [
-                '7월에는 깔루아의 창립일을 기념하는 창립제,',
-                '12월에는 다함께 연말을 마무리하는 송년회가',
-                '열립니다.',
-                '1기부터 활동기수까지 선후배가 함께 모여',
-                '네트워킹을 할 수 있는 행사입니다.',
-                '이렇게 많은 선배들, 동기들, 후배들을 사귈 수',
-                '있는 것이 깔루아의 자랑 중 하나입니다.',
-              ],
-              phone: [
-                '7월에는 깔루아의 창립일을 기념하는',
-                '창립제, 12월에는 다함께 연말을 마무리',
-                '하는 송년회가 열립니다.',
-                '1기부터 활동기수까지 선후배가 함께',
-                '모여 네트워킹을 할 수 있는 행사입니다.',
-                '이렇게 많은 선배들, 동기들, 후배들을',
-                '사귈 수 있는 것이 깔루아의 자랑 중',
-                '하나입니다.',
-              ],
-            }}
+            descriptions={networkingDescriptions}
             imageSrc={celebrate}
             altText="networking"
           />
