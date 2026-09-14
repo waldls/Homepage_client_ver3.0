@@ -4,8 +4,35 @@ import {
   MyPost,
   PagedResult,
   PostItem,
+  PostType,
   SearchPostParams,
 } from '@/types/post';
+
+// 백엔드 응답 원본 형태 (post/list)
+interface RawPostListItem {
+  id: number;
+  title: string;
+  content: string;
+  writer: string;
+  profileImageUrl?: string;
+  likes: number;
+  postType: PostType;
+  commentsCount: number;
+  imageUrls?: string | string[];
+  created_at: string;
+  updated_at?: string;
+  liked?: boolean;
+}
+
+// 백엔드 응답 원본 형태 (post/search)
+interface RawSearchPostItem {
+  id: number;
+  title: string;
+  writer: string;
+  likes?: number;
+  commentsCount?: number;
+  createdAt: string;
+}
 
 // 글 목록 조회
 export const fetchPostList = async ({
@@ -26,7 +53,7 @@ export const fetchPostList = async ({
   const res = data?.result ?? {};
   const content = Array.isArray(res.content) ? res.content : [];
 
-  const items: PostItem[] = content.map((p: any) => ({
+  const items: PostItem[] = content.map((p: RawPostListItem) => ({
     id: p.id,
     title: p.title,
     content: p.content,
@@ -51,7 +78,9 @@ export const fetchPostList = async ({
 };
 
 // 글 댓글 목록 조회
-export const fetchPostComments = async (postId: number) => {
+export const fetchPostComments = async (
+  postId: number
+): Promise<{ deletedAt: string | null }[]> => {
   const response = await authInstance.get(`/comment/${postId}/list`);
   return response.data.result.comments || [];
 };
@@ -79,7 +108,7 @@ export const fetchMyPosts = async (
 export const fetchCommentCount = async (postId: number): Promise<number> => {
   try {
     const comments = await fetchPostComments(postId);
-    return comments.filter((comment: any) => comment.deletedAt === null).length;
+    return comments.filter((comment) => comment.deletedAt === null).length;
   } catch (error) {
     console.error('댓글 수 조회 실패:', error);
     return 0;
@@ -100,7 +129,7 @@ export async function searchPosts({
   const posts = Array.isArray(data?.posts) ? data.posts : [];
   const pageInfo = data?.pageInfo ?? {};
 
-  const items: PostItem[] = posts.map((p: any) => ({
+  const items: PostItem[] = posts.map((p: RawSearchPostItem) => ({
     id: p.id,
     title: p.title,
     writer: p.writer,
