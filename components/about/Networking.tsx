@@ -3,9 +3,9 @@ import OneImage from './OneImage';
 import TwoImages from './TwoImages';
 
 import celebrate from '@/public/image/about/celebrate.svg';
-import networking1 from '@/public/image/about/networking1.avif';
-import networking2 from '@/public/image/about/networking2.avif';
-import networking3 from '@/public/image/about/networking3.avif';
+import networking1 from '@/public/image/about/kahula_network_1.avif';
+import networking2 from '@/public/image/about/kahula_network_2.avif';
+import networking3 from '@/public/image/about/kahula_network_3.avif';
 
 const networkingDescriptions = {
   default: [

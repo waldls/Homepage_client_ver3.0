@@ -2,9 +2,9 @@ import Card from './Card';
 import OneImage from './OneImage';
 import TwoImages from './TwoImages';
 
-import concert1 from '@/public/image/about/concert1.avif';
-import concert2 from '@/public/image/about/concert2.avif';
-import concert3 from '@/public/image/about/concert3.avif';
+import concert1 from '@/public/image/about/kahula_concert_1.avif';
+import concert2 from '@/public/image/about/kahula_concert_2.avif';
+import concert3 from '@/public/image/about/kahula_concert_3.avif';
 import guitar from '@/public/image/recruit/guitar.svg';
 
 const concertDescriptions = {
@@ -33,14 +33,14 @@ const Concert = () => {
     {
       width: 'dt:w-[384px]',
       height: 'dt:h-[223px]',
-      imageSrc: concert1,
-      altText: 'concert1',
+      imageSrc: concert2,
+      altText: 'concert2',
     },
     {
       width: 'dt:w-[384px]',
       height: 'dt:h-[223px]',
-      imageSrc: concert2,
-      altText: 'concert2',
+      imageSrc: concert3,
+      altText: 'concert3',
     },
   ];
 
@@ -48,14 +48,14 @@ const Concert = () => {
     {
       width: 'pad:w-[381px]',
       height: 'pad:h-[223px]',
-      imageSrc: concert1,
-      altText: 'concert1',
+      imageSrc: concert2,
+      altText: 'concert2',
     },
     {
       width: 'pad:w-[381px]',
       height: 'pad:h-[466px]',
-      imageSrc: concert3,
-      altText: 'concert3',
+      imageSrc: concert1,
+      altText: 'concert1',
     },
   ];
 
@@ -102,8 +102,8 @@ const Concert = () => {
           <OneImage
             width="pad:w-[381px]"
             height="pad:h-[223px]"
-            imageSrc={concert2}
-            altText="concert2"
+            imageSrc={concert3}
+            altText="concert3"
           />
         </div>
       </div>
@@ -116,8 +116,8 @@ const Concert = () => {
         <OneImage
           width="dt:w-[384px]"
           height="dt:h-[470px]"
-          imageSrc={concert3}
-          altText="concert3"
+          imageSrc={concert1}
+          altText="concert1"
         />
       </div>
       {/* ph */}

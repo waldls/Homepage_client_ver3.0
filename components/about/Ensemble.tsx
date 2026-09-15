@@ -2,8 +2,8 @@ import Card from './Card';
 import OneImage from './OneImage';
 import TwoImages from './TwoImages';
 
-import ensemble1 from '@/public/image/about/ensemble1.avif';
-import ensemble2 from '@/public/image/about/ensemble2.avif';
+import ensemble1 from '@/public/image/about/kahula_ensemble_1.avif';
+import ensemble2 from '@/public/image/about/kahula_ensemble_2.avif';
 import ensemble3 from '@/public/image/about/ensemble3.avif';
 import music from '@/public/image/about/music.svg';
 
@@ -31,8 +31,8 @@ const Ensemble = () => {
     {
       width: 'dt:w-[384px]',
       height: 'dt:h-[223px]',
-      imageSrc: ensemble2,
-      altText: 'ensemble2',
+      imageSrc: ensemble1,
+      altText: 'ensemble1',
     },
     {
       width: 'dt:w-[384px]',
@@ -52,8 +52,8 @@ const Ensemble = () => {
     {
       width: 'pad:w-[381px]',
       height: 'pad:h-[466px]',
-      imageSrc: ensemble1,
-      altText: 'ensemble1',
+      imageSrc: ensemble2,
+      altText: 'ensemble2',
     },
   ];
 
@@ -95,8 +95,8 @@ const Ensemble = () => {
           <OneImage
             width="pad:w-[381px]"
             height="pad:h-[223px]"
-            imageSrc={ensemble2}
-            altText="ensemble2"
+            imageSrc={ensemble1}
+            altText="ensemble1"
           />
         </div>
       </div>
@@ -105,8 +105,8 @@ const Ensemble = () => {
         <OneImage
           width="dt:w-[384px]"
           height="dt:h-[470px]"
-          imageSrc={ensemble1}
-          altText="ensemble1"
+          imageSrc={ensemble2}
+          altText="ensemble2"
         />
       </div>
       <TwoImages
